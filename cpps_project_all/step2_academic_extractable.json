@@ -1,0 +1,291 @@
+{
+  "step": 2,
+  "title": "Academic Paper Extractable Entities and Relations",
+  "date": "2026-08-31",
+  "sampled_papers": 15,
+  "entity_frequency": {
+    "Bus": {
+      "count": 13,
+      "pct": 87,
+      "decision": "required"
+    },
+    "Branch": {
+      "count": 11,
+      "pct": 73,
+      "decision": "required"
+    },
+    "Generator": {
+      "count": 10,
+      "pct": 67,
+      "decision": "required"
+    },
+    "Pump": {
+      "count": 9,
+      "pct": 60,
+      "decision": "required"
+    },
+    "Node_Junction": {
+      "count": 8,
+      "pct": 53,
+      "decision": "required"
+    },
+    "Pipe_Link": {
+      "count": 7,
+      "pct": 47,
+      "decision": "keep"
+    },
+    "Tank": {
+      "count": 7,
+      "pct": 47,
+      "decision": "keep"
+    },
+    "CyberNode": {
+      "count": 6,
+      "pct": 40,
+      "decision": "keep"
+    },
+    "CyberEdge": {
+      "count": 4,
+      "pct": 27,
+      "decision": "optional"
+    },
+    "Reservoir": {
+      "count": 3,
+      "pct": 20,
+      "decision": "optional"
+    },
+    "Substation_station_level": {
+      "count": 2,
+      "pct": 13,
+      "decision": "station_mapping"
+    },
+    "PumpStation_station_level": {
+      "count": 2,
+      "pct": 13,
+      "decision": "station_mapping"
+    },
+    "SCADA_mention": {
+      "count": 5,
+      "pct": 33,
+      "decision": "keep_as_mention"
+    },
+    "Valve": {
+      "count": 1,
+      "pct": 7,
+      "decision": "optional"
+    }
+  },
+  "relation_frequency": {
+    "POWERED_BY_Pump_to_Bus": {
+      "count": 9,
+      "pct_of_water_power_papers": 100,
+      "decision": "required_anchor"
+    },
+    "CONNECTS_TO_Bus_Bus": {
+      "count": 11,
+      "pct": 73,
+      "decision": "required"
+    },
+    "CONNECTS_TO_Node_Node": {
+      "count": 8,
+      "pct": 53,
+      "decision": "required"
+    },
+    "CASCADES_TO_cross_layer": {
+      "count": 9,
+      "pct": 60,
+      "decision": "required"
+    },
+    "TRIGGERS_Hazard_to_Component": {
+      "count": 8,
+      "pct": 53,
+      "decision": "required"
+    },
+    "CONTROLS_CyberNode_to_Bus": {
+      "count": 6,
+      "pct": 40,
+      "decision": "keep"
+    },
+    "MONITORS_CyberNode_to_Bus": {
+      "count": 4,
+      "pct": 27,
+      "decision": "optional"
+    },
+    "CONNECTS_TO_CyberNode_CyberNode": {
+      "count": 4,
+      "pct": 27,
+      "decision": "optional"
+    }
+  },
+  "attribute_frequency_power": {
+    "bus_load_MW_pu": {
+      "count": 13,
+      "pct": 87,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "bus_voltage_pu": {
+      "count": 10,
+      "pct": 67,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "branch_capacity_MW_pu": {
+      "count": 11,
+      "pct": 73,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "branch_impedance_pu": {
+      "count": 8,
+      "pct": 53,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "generator_output_MW_pu": {
+      "count": 10,
+      "pct": 67,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "voltage_level_kV": {
+      "count": 3,
+      "pct": 20,
+      "precision": "A2",
+      "decision": "keep_station_level"
+    }
+  },
+  "attribute_frequency_water": {
+    "pump_power_kW": {
+      "count": 9,
+      "pct": 60,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "pump_head_m": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "pump_flow_m3s": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "node_demand_m3s": {
+      "count": 8,
+      "pct": 53,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "node_pressure_m_MPa": {
+      "count": 8,
+      "pct": 53,
+      "precision": "A4",
+      "decision": "required"
+    },
+    "pipe_diameter_mm": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "pipe_length_m": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "pipe_roughness": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "tank_capacity_m3": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "tank_level_m": {
+      "count": 7,
+      "pct": 47,
+      "precision": "A4",
+      "decision": "keep"
+    }
+  },
+  "attribute_frequency_system": {
+    "simulation_model_type": {
+      "count": 12,
+      "pct": 80,
+      "precision": "A1",
+      "decision": "required"
+    },
+    "cascade_step_depth": {
+      "count": 9,
+      "pct": 60,
+      "precision": "A2",
+      "decision": "required"
+    },
+    "load_shedding_pct": {
+      "count": 8,
+      "pct": 53,
+      "precision": "A3",
+      "decision": "keep"
+    },
+    "pressure_satisfaction_pct": {
+      "count": 6,
+      "pct": 40,
+      "precision": "A3",
+      "decision": "keep"
+    },
+    "resilience_index": {
+      "count": 5,
+      "pct": 33,
+      "precision": "A4",
+      "decision": "keep"
+    },
+    "system_performance_Qt": {
+      "count": 5,
+      "pct": 33,
+      "precision": "A4",
+      "decision": "keep"
+    }
+  },
+  "simplification_pattern": {
+    "power": {
+      "PowerPlant": "Generator (on Bus)",
+      "Substation": "Bus",
+      "TransmissionLine": "Branch",
+      "DistributionLine": "Branch",
+      "Transformer": "Branch impedance",
+      "Breaker": "Branch on/off state",
+      "CapacitorBank": "Bus reactive injection"
+    },
+    "water": {
+      "WaterTreatmentPlant": "Node (type=source)",
+      "IntakePumpStation": "Pump + Bus mapping",
+      "BoosterPumpStation": "Pump + Bus mapping",
+      "DrainagePumpStation": "Pump + Bus mapping",
+      "Pipeline": "Pipe/Link",
+      "Valve": "Pipe state (open/closed)",
+      "Tank_Reservoir": "Tank (node)",
+      "Hydrant": "Node (type=demand)",
+      "Well": "Node (type=well)"
+    },
+    "cyber": {
+      "SCADA_Server": "CyberNode (type=scada)",
+      "PLC": "CyberNode (type=plc)",
+      "RTU": "CyberNode (type=rtu)",
+      "PMU": "CyberNode (type=pmu)",
+      "Sensor": "CyberNode (type=sensor)",
+      "Actuator": "CyberNode (type=actuator)",
+      "FiberLink": "CyberEdge (type=fiber)",
+      "WirelessLink": "CyberEdge (type=wireless)"
+    }
+  },
+  "core_cascade_path": "Bus fault -> Pump power loss -> Node pressure drop -> downstream Node pressure drop"
+}

@@ -1,0 +1,12 @@
+{
+  "paper_id": "P005",
+  "title": "Resilience analysis of potable water service after power outages in the US Virgin Islands",
+  "authors": ["Mugume et al."],
+  "year": 2022,
+  "venue": "Journal of Water Resources Planning and Management",
+  "doi": "10.1061/(ASCE)WR.1943-5452.0001607",
+  "abstract": "This paper presents a resilience analysis of potable water service subject to long-term power outages in the US Virgin Islands (USVI), using the Water Network Tool for Resilience (WNTR). The St. Thomas (STT) water distribution system has 2 Pump stations (Pump-STT-1 at 450kW, Pump-STT-2 at 380kW), 1 Tank (Tank-STT-1, capacity 15,000 m³), and 312 Node_Junctions. The St. Croix (STX) system has 1 Pump station (Pump-STX-1 at 520kW), 2 Tanks, and 245 Node_Junctions. All Pump stations are POWERED_BY the local power grid. When the power grid fails (e.g., hurricane), Pumps stop operating and the system relies on Tank storage. The resilience analysis uses pressure-driven demand (PDD) analysis in WNTR. Key findings: (a) without backup power, STT water service fails within 6-8 hours after Tank depletion; (b) STX fails within 4-5 hours due to smaller Tank capacity; (c) diesel_generator BackupPower at Pump stations extends service to 48-72 hours; (d) resilience_index for 7-day power outage: STT=0.42, STX=0.31; (e) with BackupPower: STT=0.78, STX=0.71. The study also evaluates water age as a quality metric, finding that stagnant water in Tanks exceeds 72-hour age threshold after 3 days without pumping. Recovery_time for full service restoration: 5-7 days after power restoration.",
+  "test_systems": ["USVI St. Thomas WDS", "USVI St. Croix WDS"],
+  "simulation_models": ["WNTR (EPANET-based)"],
+  "method_type": "resilience_assessment"
+}

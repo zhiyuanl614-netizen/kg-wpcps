@@ -1,0 +1,12 @@
+{
+  "paper_id": "P003",
+  "title": "Cyber-physical cascading failure and resilience of power grid: A comprehensive review",
+  "authors": ["Ibrahim M.S., Dong Z.Y., et al."],
+  "year": 2023,
+  "venue": "Frontiers in Energy Research",
+  "doi": "10.3389/fenrg.2023.1095303",
+  "abstract": "This comprehensive review systematically examines cyber-physical cascading failure mechanisms and resilience strategies in power grids. The paper categorizes CPPS cascading failures into three types: (1) Physical-initiated cascading: equipment failure or natural hazard triggers power grid cascading, which propagates to water/gas systems via POWERED_BY coupling; (2) Cyber-initiated cascading: cyber attacks (FDIA, DoS, data tampering) compromise SCADA/PLC systems, causing false control commands that trigger physical failures; (3) Cross-domain cascading: failures propagate between cyber and physical layers bidirectionally. Key coupling patterns identified: (a) SCADA CONTROLS breakers and switches on Bus/Generator; (b) PLC CONTROLS Pump on/off state; (c) RTU MONITORS Bus voltage and frequency; (d) Sensor MONITORS Node_Junction pressure and flow; (e) Pump POWERED_BY Bus is the critical water-power coupling. Resilience metrics reviewed include: system performance Q(t), resilience index R = integral(Q(t))/T, load_shedding_pct, recovery_time. Resilience enhancement strategies: (1) BackupPower deployment at critical Pump stations; (2) Network reconfiguration; (3) Microgrid islanding; (4) Cyber security hardening (IEC 62351, IEC 62443). The review identifies research gaps: (a) lack of integrated cyber-physical-water simulation platforms; (b) limited real-world validation; (c) insufficient study of AMPLIFIES positive feedback loops.",
+  "test_systems": ["Various (IEEE 14/30/118-bus, Net3, Anytown)"],
+  "simulation_models": ["DC/AC power flow", "EPANET/WNTR", "co-simulation"],
+  "method_type": "review"
+}

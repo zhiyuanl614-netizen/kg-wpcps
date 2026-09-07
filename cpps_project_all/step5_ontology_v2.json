@@ -1,0 +1,1030 @@
+{
+  "title": "Water-Power Cyber-Physical System Ontology v2.0",
+  "version": "2.0.0",
+  "date": "2026-08-31",
+  "methodology": "bottom-up from actual material content analysis (Steps 1-4)",
+  "vs_v1": "v1.0 was top-down from industry prior knowledge; v2.0 only includes entities/relations/attributes extractable from >=1 material type",
+  "entity_types": {
+    "_comment": "Dual granularity: station-level for M2/M3/M4/M5, node-level for M1, with CONTAINS mapping",
+    "station_level": {
+      "Substation": {
+        "id_prefix": "SUB",
+        "description": "变电站（场站级）",
+        "source_materials": [
+          "M2-report",
+          "M3-standard",
+          "M4-plan",
+          "M5-event"
+        ],
+        "extractable_attributes": {
+          "voltage_level_kV": {
+            "precision": "A2-A3",
+            "source": [
+              "M2",
+              "M3",
+              "M4",
+              "M5"
+            ]
+          },
+          "name": {
+            "precision": "A1",
+            "source": [
+              "M4-plan-NAMED",
+              "M5-event-SOMETIMES"
+            ]
+          },
+          "operating_status": {
+            "precision": "A1",
+            "source": [
+              "M5-event"
+            ]
+          }
+        },
+        "maps_to": "Bus",
+        "mapping_relation": "CONTAINS"
+      },
+      "PowerPlant": {
+        "id_prefix": "PP",
+        "description": "发电厂（场站级）",
+        "source_materials": [
+          "M2-report",
+          "M3-standard",
+          "M5-event"
+        ],
+        "extractable_attributes": {
+          "plant_type": {
+            "precision": "A1",
+            "source": [
+              "M2",
+              "M3"
+            ]
+          },
+          "capacity_MW": {
+            "precision": "A2-A3",
+            "source": [
+              "M2",
+              "M3"
+            ]
+          },
+          "name": {
+            "precision": "A1",
+            "source": [
+              "M5-event-SOMETIMES"
+            ]
+          }
+        },
+        "maps_to": "Generator",
+        "mapping_relation": "CONTAINS"
+      },
+      "PumpStation": {
+        "id_prefix": "PS",
+        "description": "泵站（场站级）- 取水/加压/排水泵站",
+        "source_materials": [
+          "M2-report",
+          "M3-standard",
+          "M4-plan",
+          "M5-event"
+        ],
+        "extractable_attributes": {
+          "pump_station_type": {
+            "precision": "A1",
+            "source": [
+              "M2",
+              "M3"
+            ],
+            "enum": [
+              "intake",
+              "booster",
+              "drainage"
+            ]
+          },
+          "pump_power_kW": {
+            "precision": "A2-A3",
+            "source": [
+              "M2",
+              "M3"
+            ]
+          },
+          "pump_head_m": {
+            "precision": "A3",
+            "source": [
+              "M3"
+            ]
+          },
+          "capacity_m3d": {
+            "precision": "A2-A3",
+            "source": [
+              "M2",
+              "M3"
+            ]
+          },
+          "backup_power_type": {
+            "precision": "A1-A2",
+            "source": [
+              "M3-standard",
+              "M4-plan"
+            ],
+            "enum": [
+              "none",
+              "diesel_generator",
+              "UPS",
+              "dual_feed"
+            ]
+          },
+          "backup_duration_h": {
+            "precision": "A2",
+            "source": [
+              "M3-standard",
+              "M4-plan"
+            ]
+          },
+          "name": {
+            "precision": "A1",
+            "source": [
+              "M4-plan-NAMED",
+              "M5-event-SOMETIMES"
+            ]
+          },
+          "operating_status": {
+            "precision": "A1",
+            "source": [
+              "M5-event"
+            ]
+          }
+        },
+        "maps_to": "Pump",
+        "mapping_relation": "CONTAINS"
+      },
+      "WaterTreatmentPlant": {
+        "id_prefix": "WTP",
+        "description": "净水厂（场站级）",
+        "source_materials": [
+          "M2-report",
+          "M3-standard",
+          "M4-plan"
+        ],
+        "extractable_attributes": {
+          "capacity_m3d": {
+            "precision": "A2-A3",
+            "source": [
+              "M2",
+              "M3"
+            ]
+          },
+          "treatment_process": {
+            "precision": "A1",
+            "source": [
+              "M3"
+            ]
+          },
+          "name": {
+            "precision": "A1",
+            "source": [
+              "M4-plan-NAMED"
+            ]
+          }
+        },
+        "maps_to": "Node",
+        "mapping_relation": "CONTAINS"
+      }
+    },
+    "node_level": {
+      "Bus": {
+        "id_prefix": "BUS",
+        "description": "母线节点（论文简化模式）",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "extractable_attributes": {
+          "bus_type": {
+            "precision": "A1",
+            "source": [
+              "M1"
+            ],
+            "enum": [
+              "slack",
+              "PV",
+              "PQ"
+            ]
+          },
+          "load_MW": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "load_MVar": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "voltage_pu": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "voltage_level_kV": {
+            "precision": "A2",
+            "source": [
+              "M1"
+            ]
+          }
+        }
+      },
+      "Branch": {
+        "id_prefix": "BR",
+        "description": "支路/线路（论文简化模式，含输电线/配电线/变压器/断路器）",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "extractable_attributes": {
+          "capacity_limit_MW": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "impedance_pu": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "status": {
+            "precision": "A1",
+            "source": [
+              "M1"
+            ],
+            "enum": [
+              "on",
+              "off"
+            ]
+          }
+        }
+      },
+      "Generator": {
+        "id_prefix": "GEN",
+        "description": "发电机（论文简化模式）",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "extractable_attributes": {
+          "output_MW": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "capacity_MW": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          }
+        }
+      },
+      "Pump": {
+        "id_prefix": "PMP",
+        "description": "水泵（论文简化模式）",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "extractable_attributes": {
+          "power_kW": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "head_m": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "flow_m3s": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "powered_by_bus": {
+            "precision": "A1",
+            "source": [
+              "M1"
+            ],
+            "note": "core coupling mapping"
+          }
+        }
+      },
+      "Node": {
+        "id_prefix": "ND",
+        "description": "管网节点/连接点（论文简化模式）",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "extractable_attributes": {
+          "demand_m3s": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "pressure_m": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "node_type": {
+            "precision": "A1",
+            "source": [
+              "M1"
+            ],
+            "enum": [
+              "junction",
+              "source",
+              "demand"
+            ]
+          }
+        }
+      },
+      "Pipe": {
+        "id_prefix": "PIP",
+        "description": "管段（论文简化模式）",
+        "source_materials": [
+          "M1-paper",
+          "M3-standard"
+        ],
+        "extractable_attributes": {
+          "diameter_mm": {
+            "precision": "A3-A4",
+            "source": [
+              "M1",
+              "M3"
+            ]
+          },
+          "length_m": {
+            "precision": "A3-A4",
+            "source": [
+              "M1",
+              "M3"
+            ]
+          },
+          "roughness_coefficient": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "status": {
+            "precision": "A1",
+            "source": [
+              "M1"
+            ],
+            "enum": [
+              "open",
+              "closed"
+            ]
+          }
+        }
+      },
+      "Tank": {
+        "id_prefix": "TNK",
+        "description": "水池/水库节点（论文简化模式）",
+        "source_materials": [
+          "M1-paper",
+          "M3-standard"
+        ],
+        "extractable_attributes": {
+          "capacity_m3": {
+            "precision": "A3-A4",
+            "source": [
+              "M1",
+              "M3"
+            ]
+          },
+          "water_level_m": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          }
+        }
+      }
+    },
+    "cyber_layer": {
+      "_comment": "Simplified: CyberNode + CyberEdge only, no PLC/RTU/PMU subdivision (C3 constraint)",
+      "CyberNode": {
+        "id_prefix": "CN",
+        "description": "信息节点（统一类型，通过type属性区分）",
+        "source_materials": [
+          "M1-paper",
+          "M2-report-mention",
+          "M3-standard-requirement",
+          "M5-event-NAMED"
+        ],
+        "extractable_attributes": {
+          "device_type": {
+            "precision": "A1",
+            "source": [
+              "M1",
+              "M3",
+              "M5"
+            ],
+            "enum": [
+              "scada",
+              "plc",
+              "rtu",
+              "pmu",
+              "sensor",
+              "actuator",
+              "hmi"
+            ]
+          },
+          "operating_status": {
+            "precision": "A1",
+            "source": [
+              "M1",
+              "M5"
+            ],
+            "enum": [
+              "normal",
+              "degraded",
+              "compromised",
+              "offline"
+            ]
+          }
+        }
+      },
+      "CyberEdge": {
+        "id_prefix": "CE",
+        "description": "信息链路（统一类型，通过type属性区分）",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "extractable_attributes": {
+          "link_type": {
+            "precision": "A1",
+            "source": [
+              "M1"
+            ],
+            "enum": [
+              "fiber",
+              "wireless",
+              "ethernet",
+              "radio",
+              "serial"
+            ]
+          }
+        }
+      }
+    },
+    "hazard_and_cascade": {
+      "HazardThreat": {
+        "id_prefix": "HT",
+        "description": "扰动威胁",
+        "source_materials": [
+          "M1-paper",
+          "M2-report",
+          "M3-standard",
+          "M4-plan",
+          "M5-event"
+        ],
+        "extractable_attributes": {
+          "hazard_type": {
+            "precision": "A1",
+            "source": [
+              "M1",
+              "M2",
+              "M3",
+              "M4",
+              "M5"
+            ],
+            "enum": [
+              "earthquake",
+              "flood",
+              "typhoon",
+              "ice_storm",
+              "heat_wave",
+              "FDI_attack",
+              "DoS_attack",
+              "comm_disruption",
+              "equipment_aging",
+              "overload",
+              "misoperation",
+              "software_bug"
+            ]
+          },
+          "hazard_category": {
+            "precision": "A1",
+            "source": [
+              "M1",
+              "M2",
+              "M4",
+              "M5"
+            ],
+            "enum": [
+              "natural",
+              "cyber",
+              "equipment",
+              "human"
+            ]
+          },
+          "intensity": {
+            "precision": "A2-A4",
+            "source": [
+              "M1",
+              "M5"
+            ]
+          },
+          "onset_time": {
+            "precision": "T2-T5",
+            "source": [
+              "M1",
+              "M5"
+            ]
+          },
+          "reference_event": {
+            "precision": "A1",
+            "source": [
+              "M5-event"
+            ]
+          }
+        }
+      },
+      "CascadeEvent": {
+        "id_prefix": "CEV",
+        "description": "级联失效事件",
+        "source_materials": [
+          "M1-paper",
+          "M2-report",
+          "M4-plan",
+          "M5-event"
+        ],
+        "extractable_attributes": {
+          "expression_type": {
+            "precision": "A1",
+            "source": [
+              "M1",
+              "M2",
+              "M3",
+              "M4",
+              "M5"
+            ],
+            "enum": [
+              "model",
+              "narrative",
+              "requirement"
+            ],
+            "note": "I7: different materials express cascades differently"
+          },
+          "cascade_chain": {
+            "precision": "A1-A4",
+            "source": [
+              "M1",
+              "M4",
+              "M5"
+            ],
+            "note": "narrative for M4/M5, model for M1"
+          },
+          "cascade_depth": {
+            "precision": "A2",
+            "source": [
+              "M1"
+            ]
+          },
+          "load_shedding_pct": {
+            "precision": "A3",
+            "source": [
+              "M1"
+            ]
+          },
+          "pressure_satisfaction_pct": {
+            "precision": "A3",
+            "source": [
+              "M1"
+            ]
+          },
+          "resilience_index": {
+            "precision": "A4",
+            "source": [
+              "M1",
+              "M2"
+            ]
+          },
+          "affected_population": {
+            "precision": "A2",
+            "source": [
+              "M5-event"
+            ]
+          },
+          "MW_lost": {
+            "precision": "A2",
+            "source": [
+              "M5-event"
+            ]
+          },
+          "recovery_time_h": {
+            "precision": "A2",
+            "source": [
+              "M5-event"
+            ]
+          },
+          "simulation_model_type": {
+            "precision": "A1",
+            "source": [
+              "M1-paper"
+            ],
+            "enum": [
+              "DC_power_flow",
+              "DistFlow",
+              "AC_power_flow",
+              "EPANET",
+              "coupled_DC_EPANET"
+            ]
+          },
+          "reference_source": {
+            "precision": "A1",
+            "source": [
+              "ALL"
+            ]
+          }
+        }
+      },
+      "ResponseLevel": {
+        "id_prefix": "RL",
+        "description": "应急响应等级（预案独有）",
+        "source_materials": [
+          "M4-plan"
+        ],
+        "extractable_attributes": {
+          "level": {
+            "precision": "A2",
+            "source": [
+              "M4"
+            ],
+            "enum": [
+              "I",
+              "II",
+              "III",
+              "IV"
+            ]
+          },
+          "recovery_target_pct": {
+            "precision": "A2",
+            "source": [
+              "M4"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "relation_types": {
+    "_comment": "Only relations explicitly described in materials, with explicitness field (I2)",
+    "core_relations": {
+      "POWERED_BY": {
+        "description": "水泵由母线节点供电（论文核心锚点关系，C4）",
+        "from": "Pump",
+        "to": "Bus",
+        "source_materials": [
+          "M1-paper-100%"
+        ],
+        "explicitness": {
+          "M1": "R3-formula",
+          "M4": "R2-named"
+        },
+        "inverse": "SUPPLIES_POWER_TO"
+      },
+      "POWER_SUPPLIES": {
+        "description": "变电站为泵站供电（场站级表达）",
+        "from": "Substation",
+        "to": "PumpStation",
+        "source_materials": [
+          "M2-report",
+          "M4-plan"
+        ],
+        "explicitness": {
+          "M2": "R1-qualitative",
+          "M4": "R2-named"
+        },
+        "inverse": "DEPENDS_ON_POWER"
+      },
+      "DEPENDS_ON_POWER": {
+        "description": "泵站依赖变电站供电",
+        "from": "PumpStation",
+        "to": "Substation",
+        "source_materials": [
+          "M2-report",
+          "M4-plan"
+        ],
+        "explicitness": {
+          "M2": "R1-qualitative",
+          "M4": "R2-named"
+        }
+      },
+      "CONNECTS_TO": {
+        "description": "物理连接（线路/管道）",
+        "from": [
+          "Bus",
+          "Branch",
+          "Node",
+          "Pipe"
+        ],
+        "to": [
+          "Bus",
+          "Branch",
+          "Node",
+          "Pipe"
+        ],
+        "source_materials": [
+          "M1-paper",
+          "M3-standard"
+        ],
+        "explicitness": {
+          "M1": "R3-topology",
+          "M3": "R1-specification"
+        }
+      },
+      "CASCADES_TO": {
+        "description": "级联传播（跨层或层内）",
+        "from": "ANY",
+        "to": "ANY",
+        "source_materials": [
+          "M1-paper",
+          "M2-report",
+          "M4-plan",
+          "M5-event"
+        ],
+        "explicitness": {
+          "M1": "R3-model",
+          "M2": "R1-narrative",
+          "M4": "R1-qualitative",
+          "M5": "R1-narrative"
+        },
+        "attributes": {
+          "propagation_mechanism": {
+            "precision": "A1",
+            "source": [
+              "M1",
+              "M5"
+            ],
+            "enum": [
+              "overload",
+              "loss_of_power",
+              "loss_of_control",
+              "loss_of_monitoring",
+              "hydraulic_imbalance",
+              "voltage_collapse"
+            ]
+          },
+          "propagation_delay_s": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          },
+          "probability": {
+            "precision": "A4",
+            "source": [
+              "M1"
+            ]
+          }
+        }
+      },
+      "TRIGGERS": {
+        "description": "扰动触发设施失效",
+        "from": "HazardThreat",
+        "to": "ANY",
+        "source_materials": [
+          "M1-paper",
+          "M2-report",
+          "M4-plan",
+          "M5-event"
+        ],
+        "explicitness": {
+          "M1": "R4-probability",
+          "M2": "R1-qualitative",
+          "M4": "R1-qualitative",
+          "M5": "R1-narrative"
+        }
+      },
+      "AMPLIFIES": {
+        "description": "正反馈放大（事件独有，如德州气电互依赖）",
+        "from": "ANY",
+        "to": "ANY",
+        "source_materials": [
+          "M5-event"
+        ],
+        "explicitness": {
+          "M5": "R1-narrative"
+        },
+        "note": "I11: only found in event reports (Texas gas<->power feedback loop)"
+      }
+    },
+    "cyber_relations": {
+      "CONTROLS": {
+        "description": "下行控制（信息设备控制物理设施）",
+        "from": "CyberNode",
+        "to": [
+          "Bus",
+          "Pump",
+          "Substation",
+          "PumpStation"
+        ],
+        "source_materials": [
+          "M1-paper",
+          "M5-event"
+        ],
+        "explicitness": {
+          "M1": "R2-simplified",
+          "M5": "R1-narrative"
+        }
+      },
+      "MONITORS": {
+        "description": "上行遥测（传感器监测物理设施）",
+        "from": "CyberNode",
+        "to": [
+          "Bus",
+          "Node",
+          "Pump"
+        ],
+        "source_materials": [
+          "M1-paper"
+        ],
+        "explicitness": {
+          "M1": "R2-simplified"
+        }
+      },
+      "CONNECTS_TO_CYBER": {
+        "description": "信息链路连接",
+        "from": "CyberNode",
+        "to": "CyberNode",
+        "via": "CyberEdge",
+        "source_materials": [
+          "M1-paper"
+        ],
+        "explicitness": {
+          "M1": "R2-topology"
+        }
+      }
+    },
+    "mapping_relations": {
+      "CONTAINS": {
+        "description": "场站包含节点（双粒度映射，I1）",
+        "from": [
+          "Substation",
+          "PumpStation",
+          "WaterTreatmentPlant",
+          "PowerPlant"
+        ],
+        "to": [
+          "Bus",
+          "Pump",
+          "Node",
+          "Generator"
+        ],
+        "source_materials": [
+          "inferred from dual granularity analysis"
+        ],
+        "note": "Substation CONTAINS Bus; PumpStation CONTAINS Pump; WTP CONTAINS Node; PowerPlant CONTAINS Generator"
+      }
+    },
+    "requirement_relations": {
+      "REQUIRES": {
+        "description": "系统要求（标准/预案独有）",
+        "from": [
+          "PumpStation",
+          "WaterSystem",
+          "PowerSystem"
+        ],
+        "to": [
+          "BackupPower",
+          "SCADA"
+        ],
+        "source_materials": [
+          "M3-standard",
+          "M4-plan"
+        ],
+        "explicitness": {
+          "M3": "R1-mandatory",
+          "M4": "R1-requirement"
+        },
+        "note": "I4: unique to standards and plans"
+      },
+      "MUST_SATISFY": {
+        "description": "必须满足安全准则（标准独有）",
+        "from": "PowerSystem",
+        "to": "SafetyCriterion",
+        "source_materials": [
+          "M3-standard"
+        ],
+        "explicitness": {
+          "M3": "R1-mandatory"
+        },
+        "note": "I5: N-1, Kp>=1.05 etc."
+      }
+    }
+  },
+  "deleted_from_v1": {
+    "_comment": "Attributes deleted because 0 material types can extract them",
+    "latitude_longitude": "0 materials - deleted",
+    "ip_address": "0 materials - deleted",
+    "firmware_version": "0 materials - deleted",
+    "communication_protocol_detail": "1 material (M3-standard only) - downgraded to optional",
+    "CapacitorBank": "not a separate entity in any material - absorbed into Bus reactive injection",
+    "Breaker": "not a separate entity in papers - absorbed into Branch on/off state",
+    "Transformer": "not a separate entity in papers - absorbed into Branch impedance",
+    "Valve": "1 material (M3-standard only) - absorbed into Pipe status attribute",
+    "Hydrant": "0 materials as separate entity - absorbed into Node type=demand",
+    "Well": "0 materials as separate entity - absorbed into Node type=well"
+  },
+  "material_specific_extraction_strategies": {
+    "M1_paper": {
+      "entity_mode": "node_level",
+      "entities": [
+        "Bus",
+        "Branch",
+        "Generator",
+        "Pump",
+        "Node",
+        "Pipe",
+        "Tank",
+        "CyberNode",
+        "CyberEdge"
+      ],
+      "simplification": "Substation->Bus, PumpStation->Pump+Bus mapping, WTP->Node, Valve->Pipe status",
+      "attribute_precision": "A4-simulation",
+      "relation_mode": "R3-formula with POWERED_BY mapping table",
+      "cascade_mode": "model with simulation results"
+    },
+    "M2_report": {
+      "entity_mode": "station_level",
+      "entities": [
+        "Substation",
+        "PumpStation",
+        "WaterTreatmentPlant",
+        "PowerPlant",
+        "HazardThreat"
+      ],
+      "simplification": "no simplification needed - reports use station-level naturally",
+      "attribute_precision": "A1-A2",
+      "relation_mode": "R1-qualitative dependency",
+      "cascade_mode": "narrative causal chain",
+      "unique": "system statistics, policy recommendations, research gaps"
+    },
+    "M3_standard": {
+      "entity_mode": "station_level + device_level",
+      "entities": [
+        "Substation",
+        "PumpStation",
+        "Pump",
+        "Pipeline",
+        "Tank",
+        "Valve",
+        "BackupPower",
+        "SCADA_requirement",
+        "HazardThreat"
+      ],
+      "simplification": "no simplification needed - standards define classification",
+      "attribute_precision": "A3-rated design parameters",
+      "relation_mode": "R1-mandatory requirement",
+      "cascade_mode": "requirement (must prevent cascading)",
+      "unique": "mandatory requirements, safety thresholds, facility classification"
+    },
+    "M4_plan": {
+      "entity_mode": "station_level_NAMED",
+      "entities": [
+        "Substation",
+        "PumpStation",
+        "WaterTreatmentPlant",
+        "HazardThreat",
+        "ResponseLevel"
+      ],
+      "simplification": "no simplification - plans use NAMED facilities",
+      "attribute_precision": "A2-semi-quantitative",
+      "relation_mode": "R2-named mapping (station A supplies station B)",
+      "cascade_mode": "narrative with response measures",
+      "unique": "NAMED facility mapping, backup power details, response levels, emergency measures"
+    },
+    "M5_event": {
+      "entity_mode": "station_level",
+      "entities": [
+        "Substation",
+        "Generator",
+        "PumpStation",
+        "WaterSystem",
+        "HazardThreat",
+        "SCADA"
+      ],
+      "simplification": "no simplification needed",
+      "attribute_precision": "A1-A2 with timeline and impact statistics",
+      "relation_mode": "R1-narrative causal chain with timeline",
+      "cascade_mode": "complete cascade chain from trigger to impact",
+      "unique": "complete cascade chains, timeline, impact statistics, AMPLIFIES feedback, cyber kill chains"
+    }
+  }
+}

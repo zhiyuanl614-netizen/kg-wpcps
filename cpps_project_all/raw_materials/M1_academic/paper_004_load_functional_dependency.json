@@ -1,0 +1,12 @@
+{
+  "paper_id": "P004",
+  "title": "Vulnerability analyses of power-water interdependent infrastructure networks by using load-functional dependency coupled cascading failure model",
+  "authors": ["Li et al."],
+  "year": 2026,
+  "venue": "Reliability Engineering & System Safety",
+  "doi": "10.1016/j.ress.2026.111014",
+  "abstract": "This study proposes a load-functional dependency coupled cascading failure modeling framework for power-water interdependent infrastructure networks. The power network uses IEEE 30-bus system with 6 Generators, 41 Branches, and 30 Buses. The water network uses a modified Anytown network with 5 Pumps, 3 Tanks, 45 Node_Junctions, and 56 Pipe_Links. The functional dependency coupling: Pump-1 (intake, 500kW) POWERED_BY Bus-10 (35kV), Pump-2 (booster, 350kW) POWERED_BY Bus-22 (10kV), Pump-3 (booster, 280kW) POWERED_BY Bus-24 (10kV), Pump-4 (drainage, 200kW) POWERED_BY Bus-15 (35kV), Pump-5 (intake, 450kW) POWERED_BY Bus-8 (110kV). The cascading failure model combines: (1) load redistribution in power network (DC power flow); (2) functional dependency from power to water (Pump power loss → pressure drop); (3) hydraulic simulation in water network (EPANET). Key results: (a) simultaneous failure of Bus-10 and Bus-8 causes 78% load_shedding_pct in power and 65% pressure_satisfaction_pct drop in water; (b) Tank capacity provides 2-6 hours of buffer before pressure drops below threshold; (c) BackupPower (diesel_generator, 8h duration) at Pump-1 and Pump-5 reduces cascade impact by 55%; (d) cascade_step_depth averages 4.2 steps for power-initiated cascades and 6.8 steps for cross-system cascades. The resilience_index ranges from 0.31 (worst case) to 0.89 (with backup power).",
+  "test_systems": ["IEEE 30-bus", "Anytown (modified)"],
+  "simulation_models": ["DC_power_flow", "EPANET"],
+  "method_type": "vulnerability_assessment"
+}

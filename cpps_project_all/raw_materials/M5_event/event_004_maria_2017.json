@@ -1,0 +1,16 @@
+{
+  "event_id": "E004",
+  "title": "2017 Hurricane Maria - Puerto Rico Infrastructure Collapse",
+  "year": 2017,
+  "date": "2017-09-20",
+  "location": "Puerto Rico, USA",
+  "event_type": "typhoon",
+  "description": "Hurricane Maria made landfall in Puerto Rico on September 20, 2017 as a Category 4 storm with 155 mph winds. The hurricane destroyed 80% of Puerto Rico's utility poles and all transmission lines, causing the largest and longest power outage in US history. 100% of the island's 1.5 million electric customers lost power. The cascading failure to water systems was catastrophic: (1) All electric Pump stations stopped operating immediately; (2) Without power, water treatment plants could not process water; (3) Tank reserves depleted within 24-48 hours; (4) One month after landfall, 44% of Puerto Rico still had no water service; (5) The water system relied entirely on electric power for pumping, treatment, and distribution. The Puerto Rico Aqueduct and Sewer Authority (PRASA) operates approximately 130 water treatment plants and 1,000 Pump stations, all dependent on the power grid. Backup generators existed at some facilities but many failed due to lack of diesel fuel supply (roads blocked, fuel shortages). The AMPLIFIES loop: hurricane → power grid destruction → Pump failure → water service loss → health crisis (no drinking water, sanitation failure) → increased vulnerability to disease. Power restoration took 11 months (328 days) for the last customers. Water service restoration was slightly faster but still took 3-6 months for most areas. This event demonstrated the extreme vulnerability of island infrastructure systems with single-source power dependency and inadequate BackupPower reserves.",
+  "impact": {
+    "population_affected": 3400000,
+    "MW_lost": 3500,
+    "recovery_time_hours": 7872,
+    "water_no_service_pct_at_1month": 44,
+    "water_impact": "100% initial water loss, 44% no water at 1 month, 130 treatment plants offline"
+  }
+}

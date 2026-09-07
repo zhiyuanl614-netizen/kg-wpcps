@@ -1,0 +1,211 @@
+{
+  "entities": [
+    {
+      "id": "Bus_朝阳门变电站",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "朝阳门220kV变电站",
+      "attributes": {
+        "voltage_level_kV": 220
+      }
+    },
+    {
+      "id": "Bus_孙河变电站",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "孙河220kV变电站",
+      "attributes": {
+        "voltage_level_kV": 220
+      }
+    },
+    {
+      "id": "Bus_田村变电站",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "田村110kV变电站",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "Bus_花乡变电站",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "花乡110kV变电站",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "Pump_第三水厂",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "第三水厂泵站",
+      "attributes": {
+        "pump_power": 800
+      }
+    },
+    {
+      "id": "Pump_第九水厂",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "第九水厂泵站",
+      "attributes": {
+        "pump_power": 1200
+      }
+    },
+    {
+      "id": "Pump_田村山水厂",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "田村山净水厂泵站",
+      "attributes": {
+        "pump_power": 500
+      }
+    },
+    {
+      "id": "Pump_郭公庄水厂",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "郭公庄水厂泵站",
+      "attributes": {
+        "pump_power": 600
+      }
+    },
+    {
+      "id": "BP_第三水厂_DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "第三水厂柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 8
+      }
+    },
+    {
+      "id": "BP_第九水厂_DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "第九水厂柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 12
+      }
+    },
+    {
+      "id": "BP_田村山_DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "田村山柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 6
+      }
+    },
+    {
+      "id": "BP_郭公庄_DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "郭公庄柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 8
+      }
+    },
+    {
+      "id": "HazardType_极端低温",
+      "type": "HazardType",
+      "layer": "hazard",
+      "name_zh": "极端低温",
+      "attributes": {
+        "hazard_category": "natural"
+      }
+    },
+    {
+      "id": "WS_北京供水系统",
+      "type": "WaterSystem",
+      "layer": "system",
+      "name_zh": "北京市供水系统",
+      "attributes": {}
+    }
+  ],
+  "relations": [
+    {
+      "source": "Pump_第三水厂",
+      "target": "Bus_朝阳门变电站",
+      "type": "POWERED_BY",
+      "explicitness": "R2-named",
+      "evidence": "预案第三节：第三水厂由朝阳门220kV变电站供电"
+    },
+    {
+      "source": "Pump_第九水厂",
+      "target": "Bus_孙河变电站",
+      "type": "POWERED_BY",
+      "explicitness": "R2-named",
+      "evidence": "预案第三节：第九水厂由孙河220kV变电站供电"
+    },
+    {
+      "source": "Pump_田村山水厂",
+      "target": "Bus_田村变电站",
+      "type": "POWERED_BY",
+      "explicitness": "R2-named",
+      "evidence": "预案第三节：田村山净水厂由田村110kV变电站供电"
+    },
+    {
+      "source": "Pump_郭公庄水厂",
+      "target": "Bus_花乡变电站",
+      "type": "POWERED_BY",
+      "explicitness": "R2-named",
+      "evidence": "预案第三节：郭公庄水厂由花乡110kV变电站供电"
+    },
+    {
+      "source": "Pump_第三水厂",
+      "target": "BP_第三水厂_DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R2-named",
+      "evidence": "预案第四节：第三水厂配备2台800kW柴油发电机，8小时"
+    },
+    {
+      "source": "Pump_第九水厂",
+      "target": "BP_第九水厂_DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R2-named",
+      "evidence": "预案第四节：第九水厂配备3台1200kW柴油发电机，12小时"
+    },
+    {
+      "source": "Pump_田村山水厂",
+      "target": "BP_田村山_DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R2-named",
+      "evidence": "预案第四节：田村山配备1台500kW柴油发电机，6小时"
+    },
+    {
+      "source": "Pump_郭公庄水厂",
+      "target": "BP_郭公庄_DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R2-named",
+      "evidence": "预案第四节：郭公庄配备2台600kW柴油发电机，8小时"
+    }
+  ],
+  "cascade_chains": [
+    {
+      "trigger": "HazardType_极端低温",
+      "chain": [
+        "线路覆冰",
+        "变电站跳闸",
+        "水厂泵站断电",
+        "片区水压下降",
+        "启动柴油发电机",
+        "备用电源耗尽则供水中断"
+      ],
+      "response_level": "II",
+      "description": "极端低温→线路覆冰→变电站跳闸→水厂泵站断电→启动备用电源"
+    }
+  ],
+  "metadata": {
+    "plan_id": "PL001",
+    "extraction_date": "2026-09-06",
+    "ontology_version": "2.0",
+    "material_type": "M4_emergency_plan"
+  }
+}

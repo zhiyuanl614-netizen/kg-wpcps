@@ -1,0 +1,317 @@
+{
+  "step": "3c",
+  "title": "Merged Report+Standard Extractable Analysis",
+  "date": "2026-08-31",
+  "source_reports": 5,
+  "source_standards": 5,
+  "merged_entity_frequency": {
+    "Substation": {
+      "report_pct": 60,
+      "standard_pct": 40,
+      "max_granularity": "L2-station",
+      "combined_level": "high"
+    },
+    "PumpStation": {
+      "report_pct": 80,
+      "standard_pct": 60,
+      "max_granularity": "L2-station",
+      "combined_level": "high"
+    },
+    "WaterTreatmentPlant": {
+      "report_pct": 60,
+      "standard_pct": 20,
+      "max_granularity": "L2-station",
+      "combined_level": "high"
+    },
+    "PowerPlant": {
+      "report_pct": 60,
+      "standard_pct": 0,
+      "max_granularity": "L2-station",
+      "combined_level": "medium"
+    },
+    "Generator": {
+      "report_pct": 20,
+      "standard_pct": 40,
+      "max_granularity": "L2-station",
+      "combined_level": "high"
+    },
+    "SCADA_mention": {
+      "report_pct": 60,
+      "standard_pct": 0,
+      "max_granularity": "L1-mention",
+      "combined_level": "medium"
+    },
+    "CyberDevice": {
+      "report_pct": 20,
+      "standard_pct": 0,
+      "max_granularity": "L3-device",
+      "combined_level": "medium"
+    },
+    "HazardType": {
+      "report_pct": 80,
+      "standard_pct": 40,
+      "max_granularity": "L1-system",
+      "combined_level": "high"
+    },
+    "NaturalGasFacility": {
+      "report_pct": 20,
+      "standard_pct": 0,
+      "max_granularity": "L2-station",
+      "combined_level": "medium"
+    },
+    "Pump": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "max_granularity": "L3-device",
+      "combined_level": "medium"
+    },
+    "Pipeline": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "max_granularity": "L2-station",
+      "combined_level": "medium"
+    },
+    "Tank": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "max_granularity": "L2-station",
+      "combined_level": "medium"
+    },
+    "Valve": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "max_granularity": "L3-device",
+      "combined_level": "medium"
+    },
+    "TransmissionLine": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "max_granularity": "L2-station",
+      "combined_level": "medium"
+    },
+    "SCADA_requirement": {
+      "report_pct": 0,
+      "standard_pct": 60,
+      "max_granularity": "L1-requirement",
+      "combined_level": "medium"
+    },
+    "BackupPower": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "max_granularity": "L3-device",
+      "combined_level": "medium"
+    },
+    "Sensor": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "max_granularity": "L3-device",
+      "combined_level": "medium"
+    },
+    "DMA_District": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "max_granularity": "L2-station",
+      "combined_level": "medium"
+    }
+  },
+  "merged_relation_frequency": {
+    "DEPENDS_ON_PumpStation_to_Substation": {
+      "report_pct": 60,
+      "standard_pct": 0,
+      "explicitness": "R1-qualitative",
+      "combined_level": "medium"
+    },
+    "DEPENDS_ON_WaterSystem_to_PowerSystem": {
+      "report_pct": 40,
+      "standard_pct": 0,
+      "explicitness": "R1-qualitative",
+      "combined_level": "medium"
+    },
+    "CASCADES_TO_Power_to_Water": {
+      "report_pct": 60,
+      "standard_pct": 0,
+      "explicitness": "R1-qualitative",
+      "combined_level": "medium"
+    },
+    "CASCADES_TO_Gas_to_Power": {
+      "report_pct": 20,
+      "standard_pct": 0,
+      "explicitness": "R1-qualitative",
+      "combined_level": "medium"
+    },
+    "TRIGGERS_Hazard_to_Facility": {
+      "report_pct": 40,
+      "standard_pct": 0,
+      "explicitness": "R1-qualitative",
+      "combined_level": "medium"
+    },
+    "CONTROLS_Cyber_to_Physical": {
+      "report_pct": 20,
+      "standard_pct": 0,
+      "explicitness": "R1-qualitative",
+      "combined_level": "medium"
+    },
+    "DEPENDS_ON_PumpStation_to_BackupPower": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "explicitness": "R1-qualitative-requirement",
+      "combined_level": "medium"
+    },
+    "REQUIRES_System_to_SCADA": {
+      "report_pct": 0,
+      "standard_pct": 60,
+      "explicitness": "R1-qualitative-requirement",
+      "combined_level": "medium"
+    },
+    "MUST_SATISFY_System_to_Criterion": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "explicitness": "R1-qualitative-mandatory",
+      "combined_level": "medium"
+    },
+    "MUST_PREVENT_System_to_CascadingFailure": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "explicitness": "R1-qualitative-mandatory",
+      "combined_level": "medium"
+    }
+  },
+  "merged_attribute_frequency": {
+    "voltage_level_kV": {
+      "report_pct": 20,
+      "standard_pct": 40,
+      "precision": "A2"
+    },
+    "pump_power_kW": {
+      "report_pct": 20,
+      "standard_pct": 0,
+      "precision": "A2"
+    },
+    "backup_power_type": {
+      "report_pct": 40,
+      "standard_pct": 40,
+      "precision": "A1"
+    },
+    "capacity_m3d": {
+      "report_pct": 20,
+      "standard_pct": 40,
+      "precision": "A2"
+    },
+    "power_plant_type": {
+      "report_pct": 40,
+      "standard_pct": 0,
+      "precision": "A1"
+    },
+    "hazard_category": {
+      "report_pct": 80,
+      "standard_pct": 0,
+      "precision": "A1"
+    },
+    "statistical_data": {
+      "report_pct": 60,
+      "standard_pct": 0,
+      "precision": "A2"
+    },
+    "resilience_metrics": {
+      "report_pct": 20,
+      "standard_pct": 0,
+      "precision": "A2"
+    },
+    "research_gaps": {
+      "report_pct": 40,
+      "standard_pct": 0,
+      "precision": "A1"
+    },
+    "pump_rated_power_kW": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "precision": "A3-rated"
+    },
+    "pump_head_m": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "precision": "A3-rated"
+    },
+    "pump_flow_m3s": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "precision": "A3-rated"
+    },
+    "pipe_diameter_mm": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "precision": "A3-rated"
+    },
+    "pipe_material": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "precision": "A1-qualitative"
+    },
+    "backup_power_duration": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "precision": "A2-semi-quantitative"
+    },
+    "station_grade": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "precision": "A2-semi-quantitative"
+    },
+    "stability_criterion": {
+      "report_pct": 0,
+      "standard_pct": 40,
+      "precision": "A2-semi-quantitative"
+    },
+    "leak_rate_limit": {
+      "report_pct": 0,
+      "standard_pct": 20,
+      "precision": "A2-semi-quantitative"
+    },
+    "SCADA_requirement": {
+      "report_pct": 0,
+      "standard_pct": 60,
+      "precision": "A1-qualitative"
+    }
+  },
+  "comparison_with_papers": {
+    "entity_granularity": {
+      "paper_M1": "L4-node (Bus, Node, Pump)",
+      "report_M2": "L2-station (Substation, PumpStation, WTP)",
+      "standard_M3": "L2-station + L3-device (PumpStation, Pump, Valve, BackupPower)",
+      "implication": "Ontology needs dual granularity: station-level for M2/M3/M4/M5, node-level for M1"
+    },
+    "relation_explicitness": {
+      "paper_M1": "R3-formula (POWERED_BY mapping table)",
+      "report_M2": "R1-qualitative (narrative dependency)",
+      "standard_M3": "R1-qualitative-REQUIREMENT (mandatory backup power, SCADA)",
+      "implication": "Ontology needs relation_type field to distinguish formula/qualitative/requirement"
+    },
+    "attribute_precision": {
+      "paper_M1": "A4-simulation (pu values, model parameters)",
+      "report_M2": "A1-A2 (qualitative, statistics)",
+      "standard_M3": "A3-rated (design parameters, safety thresholds)",
+      "implication": "Same attribute name (e.g. pump_power) has different precision across materials"
+    },
+    "cascade_description": {
+      "paper_M1": "F3-physical model (DC flow + EPANET)",
+      "report_M2": "F1-narrative (causal chain)",
+      "standard_M3": "F0-none (only requires prevention)",
+      "implication": "CascadeEvent entity needs expression_type field: model/narrative/requirement"
+    },
+    "unique_contributions": {
+      "paper_M1": "Simulation model type, cascade simulation results, resilience index formula",
+      "report_M2": "System-level statistics, policy recommendations, research gap identification",
+      "standard_M3": "Mandatory requirements, safety thresholds, facility classification, design parameters"
+    }
+  },
+  "ontology_implications": [
+    "I1: Entity needs dual granularity - station-level (Substation, PumpStation) AND node-level (Bus, Pump) with CONTAINS mapping",
+    "I2: Relation needs explicitness field - formula/qualitative/requirement to preserve material-specific expression",
+    "I3: Attribute needs precision field - simulation/rated/semi-quantitative/qualitative to distinguish source quality",
+    "I4: BackupPower and SCADA_requirement are unique to standards/reports, not found in papers - must be added as optional entities",
+    "I5: Safety thresholds from standards (N-1, Kp>=1.05, leak_rate<=12%) serve as model constraint parameters",
+    "I6: No standard covers water-power interdependency - this gap itself is a research finding for the knowledge graph",
+    "I7: CascadeEvent needs expression_type: model (paper), narrative (report/plan/event), requirement (standard)",
+    "I8: Report and standard both use station-level entities, confirming station-level as the common ground for M2/M3/M4/M5"
+  ]
+}

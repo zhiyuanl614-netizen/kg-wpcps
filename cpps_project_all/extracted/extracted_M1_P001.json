@@ -1,0 +1,310 @@
+{
+  "entities": [
+    {
+      "id": "Bus-1",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "1号母线",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "Bus-10",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "10号母线",
+      "attributes": {
+        "voltage_level_kV": 35
+      }
+    },
+    {
+      "id": "Bus-22",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "22号母线",
+      "attributes": {
+        "voltage_level_kV": 10
+      }
+    },
+    {
+      "id": "Bus-24",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "24号母线",
+      "attributes": {
+        "voltage_level_kV": 10
+      }
+    },
+    {
+      "id": "Bus-8",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "8号母线",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "Bus-15",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "15号母线",
+      "attributes": {
+        "voltage_level_kV": 35
+      }
+    },
+    {
+      "id": "Gen-1",
+      "type": "Generator",
+      "layer": "power",
+      "name_zh": "1号发电机",
+      "attributes": {
+        "generator_output": 2.32,
+        "power_plant_type": "thermal"
+      }
+    },
+    {
+      "id": "Pump-1",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "1号水泵(取水)",
+      "attributes": {
+        "pump_power": 500,
+        "pump_head": 35,
+        "pump_flow": 1.0
+      }
+    },
+    {
+      "id": "Pump-2",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "2号水泵(加压)",
+      "attributes": {
+        "pump_power": 350,
+        "pump_head": 28,
+        "pump_flow": 0.8
+      }
+    },
+    {
+      "id": "Pump-3",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "3号水泵(加压)",
+      "attributes": {
+        "pump_power": 280,
+        "pump_head": 22,
+        "pump_flow": 0.6
+      }
+    },
+    {
+      "id": "Pump-4",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "4号水泵(排水)",
+      "attributes": {
+        "pump_power": 200,
+        "pump_head": 15,
+        "pump_flow": 0.4
+      }
+    },
+    {
+      "id": "Pump-5",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "5号水泵(取水)",
+      "attributes": {
+        "pump_power": 450,
+        "pump_head": 40,
+        "pump_flow": 0.9
+      }
+    },
+    {
+      "id": "Node-12",
+      "type": "Node_Junction",
+      "layer": "water",
+      "name_zh": "12号水力节点",
+      "attributes": {
+        "node_demand": 0.15,
+        "node_pressure": 0.28
+      }
+    },
+    {
+      "id": "Tank-1",
+      "type": "Tank",
+      "layer": "water",
+      "name_zh": "1号水池",
+      "attributes": {
+        "tank_capacity": 5000,
+        "tank_level": 4.5
+      }
+    },
+    {
+      "id": "SCADA-1",
+      "type": "SCADA",
+      "layer": "cyber",
+      "name_zh": "1号SCADA系统",
+      "attributes": {}
+    },
+    {
+      "id": "PLC-P1",
+      "type": "CyberNode",
+      "layer": "cyber",
+      "name_zh": "1号水泵PLC",
+      "attributes": {
+        "type": "plc"
+      }
+    },
+    {
+      "id": "RTU-B8",
+      "type": "CyberNode",
+      "layer": "cyber",
+      "name_zh": "8号母线RTU",
+      "attributes": {
+        "type": "rtu"
+      }
+    },
+    {
+      "id": "HazardType_earthquake",
+      "type": "HazardType",
+      "layer": "hazard",
+      "name_zh": "地震",
+      "attributes": {
+        "hazard_category": "natural"
+      }
+    },
+    {
+      "id": "BP-P1-DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "1号水泵柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 8
+      }
+    },
+    {
+      "id": "BP-P5-DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "5号水泵柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 8
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "Pump-1",
+      "target": "Bus-10",
+      "type": "POWERED_BY",
+      "explicitness": "R3-formula",
+      "evidence": "Table 2: Pump-1 (intake, 500kW) powered by Bus-10 (35kV)"
+    },
+    {
+      "source": "Pump-2",
+      "target": "Bus-22",
+      "type": "POWERED_BY",
+      "explicitness": "R3-formula",
+      "evidence": "Table 2: Pump-2 (booster, 350kW) powered by Bus-22 (10kV)"
+    },
+    {
+      "source": "Pump-3",
+      "target": "Bus-24",
+      "type": "POWERED_BY",
+      "explicitness": "R3-formula",
+      "evidence": "Table 2: Pump-3 (booster, 280kW) powered by Bus-24 (10kV)"
+    },
+    {
+      "source": "Pump-4",
+      "target": "Bus-15",
+      "type": "POWERED_BY",
+      "explicitness": "R3-formula",
+      "evidence": "Table 2: Pump-4 (drainage, 200kW) powered by Bus-15 (35kV)"
+    },
+    {
+      "source": "Pump-5",
+      "target": "Bus-8",
+      "type": "POWERED_BY",
+      "explicitness": "R3-formula",
+      "evidence": "Table 2: Pump-5 (intake, 450kW) powered by Bus-8 (110kV)"
+    },
+    {
+      "source": "HazardType_earthquake",
+      "target": "Bus-8",
+      "type": "TRIGGERS",
+      "explicitness": "R4-probabilistic",
+      "evidence": "Earthquake probability model P(fault|EQ)"
+    },
+    {
+      "source": "SCADA-1",
+      "target": "Bus-8",
+      "type": "CONTROLS",
+      "explicitness": "R2-simplified",
+      "evidence": "SCADA controls breaker state on Bus-8"
+    },
+    {
+      "source": "PLC-P1",
+      "target": "Pump-1",
+      "type": "CONTROLS",
+      "explicitness": "R2-simplified",
+      "evidence": "PLC controls Pump-1 on/off state"
+    },
+    {
+      "source": "RTU-B8",
+      "target": "Bus-8",
+      "type": "MONITORS",
+      "explicitness": "R2-simplified",
+      "evidence": "RTU monitors Bus-8 voltage and frequency"
+    },
+    {
+      "source": "Pump-1",
+      "target": "BP-P1-DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R2-named",
+      "evidence": "Section 5.3: Pump-1 equipped with 500kW diesel generator, 8h duration"
+    },
+    {
+      "source": "Pump-5",
+      "target": "BP-P5-DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R2-named",
+      "evidence": "Section 5.3: Pump-5 equipped with 450kW diesel generator, 8h duration"
+    }
+  ],
+  "cascade_paths": [
+    {
+      "chain": [
+        "Bus-10",
+        "Pump-1",
+        "Node-12"
+      ],
+      "relation_type": "CASCADES_TO",
+      "expression": "model",
+      "description": "Bus-10 fault → Pump-1 power loss → Node-12 pressure drop to 0.15MPa"
+    },
+    {
+      "chain": [
+        "Bus-8",
+        "Pump-5",
+        "Node-12"
+      ],
+      "relation_type": "CASCADES_TO",
+      "expression": "model",
+      "description": "Bus-8 fault → Pump-5 power loss → Node-12 pressure drop"
+    }
+  ],
+  "system_info": {
+    "simulation_model_type": "DC_power_flow + EPANET",
+    "cascade_step_depth": 5,
+    "load_shedding_pct": 23.5,
+    "resilience_index": 0.72
+  },
+  "metadata": {
+    "paper_id": "P001",
+    "extraction_date": "2026-09-06",
+    "ontology_version": "2.0",
+    "material_type": "M1_academic_paper"
+  }
+}

@@ -1,0 +1,687 @@
+{
+  "step": "5c",
+  "title": "Merged Attribute Frequency → v2.0 Attribute Set",
+  "date": "2026-09-06",
+  "method": "Attributes bound to entities; semantic-equivalent names merged; precision preserved per material; cross-validated with Step1 matrix",
+  "merge_decisions": {
+    "pump_rated_power_kW → pump_power": "M3 standard rated value merged with M1 simulation value",
+    "backup_power_duration → backup_duration_h": "Unified backup duration attribute",
+    "resilience_metrics → resilience_index": "M2 report metrics merged with M1 simulation index",
+    "capacity_m3d → tank_capacity": "M2/M3 capacity data merged with M1 tank capacity"
+  },
+  "corrections_from_step1_matrix": {
+    "voltage_level_kV": "Step1 confirms 5 materials (M1-M5), not just 3",
+    "backup_power_type": "Step1 confirms 4 materials (M2-M5), added M5=20%",
+    "recovery_time": "Step1 confirms 3 materials (M2+M4+M5), not just M5",
+    "impact_population": "Step1 confirms 2 materials (M2+M5), not just M5",
+    "hazard_category": "Step1 confirms 4 materials (M2-M5), not just M2",
+    "generator_output": "Added M2+M3 from rated_capacity in step1 matrix"
+  },
+  "decision_rules": {
+    "required": "appears in >=4 material types",
+    "keep": "appears in 3 material types",
+    "keep_moderate": "appears in 2 material types",
+    "keep_single_high": "appears in 1 material type but pct>=50%",
+    "optional": "appears in 1 material type with pct<50%",
+    "delete": "no material can extract (C5 violation)"
+  },
+  "attributes": {
+    "voltage_level_kV": {
+      "belongs_to": "Bus",
+      "total_materials": 5,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 20,
+        "M2": 20,
+        "M3": 40,
+        "M4": 20,
+        "M5": 20
+      },
+      "precision_per_material": {
+        "M1": "A2-semi-quantitative",
+        "M2": "A2-semi-quantitative",
+        "M3": "A3-rated",
+        "M4": "A2-semi-quantitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "required"
+    },
+    "backup_power_type": {
+      "belongs_to": "BackupPower",
+      "total_materials": 4,
+      "appeared_in": [
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 40,
+        "M3": 40,
+        "M4": 80,
+        "M5": 20
+      },
+      "precision_per_material": {
+        "M2": "A1-qualitative",
+        "M3": "A2-semi-quantitative",
+        "M4": "A2-semi-quantitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "required"
+    },
+    "hazard_category": {
+      "belongs_to": "HazardType",
+      "total_materials": 4,
+      "appeared_in": [
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 80,
+        "M3": 40,
+        "M4": 80,
+        "M5": 100
+      },
+      "precision_per_material": {
+        "M2": "A1-qualitative",
+        "M3": "A1-qualitative",
+        "M4": "A1-qualitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "required"
+    },
+    "generator_output": {
+      "belongs_to": "Generator",
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 67,
+        "M2": 20,
+        "M3": 20
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M2": "A2-semi-quantitative",
+        "M3": "A3-rated"
+      },
+      "v2_decision": "keep"
+    },
+    "pump_power": {
+      "belongs_to": "Pump",
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 60,
+        "M2": 20,
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M2": "A2-semi-quantitative",
+        "M3": "A3-rated"
+      },
+      "v2_decision": "keep"
+    },
+    "tank_capacity": {
+      "belongs_to": "Tank",
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 47,
+        "M2": 20,
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M2": "A2-semi-quantitative",
+        "M3": "A2-semi-quantitative"
+      },
+      "v2_decision": "keep"
+    },
+    "backup_duration_h": {
+      "belongs_to": "BackupPower",
+      "total_materials": 3,
+      "appeared_in": [
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M3": 20,
+        "M4": 40,
+        "M5": 20
+      },
+      "precision_per_material": {
+        "M3": "A2-semi-quantitative",
+        "M4": "A2-semi-quantitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "keep"
+    },
+    "recovery_time": {
+      "belongs_to": "System",
+      "total_materials": 3,
+      "appeared_in": [
+        "M2",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 20,
+        "M4": 20,
+        "M5": 100
+      },
+      "precision_per_material": {
+        "M2": "A2-semi-quantitative",
+        "M4": "A2-semi-quantitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "keep"
+    },
+    "pump_head": {
+      "belongs_to": "Pump",
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 47,
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M3": "A3-rated"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "pump_flow": {
+      "belongs_to": "Pump",
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 47,
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M3": "A3-rated"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "pipe_diameter": {
+      "belongs_to": "Pipe_Link",
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 47,
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M3": "A3-rated"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "load_shedding_pct": {
+      "belongs_to": "System",
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M2"
+      ],
+      "best_pct_per_material": {
+        "M1": 53,
+        "M2": 20
+      },
+      "precision_per_material": {
+        "M1": "A3-index",
+        "M2": "A2-semi-quantitative"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "resilience_index": {
+      "belongs_to": "System",
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M2"
+      ],
+      "best_pct_per_material": {
+        "M1": 33,
+        "M2": 20
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation",
+        "M2": "A2-semi-quantitative"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "MW_lost": {
+      "belongs_to": "System",
+      "total_materials": 2,
+      "appeared_in": [
+        "M2",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 20,
+        "M5": 60
+      },
+      "precision_per_material": {
+        "M2": "A2-semi-quantitative",
+        "M5": "A2-semi-quantitative"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "cascade_chain_narrative": {
+      "belongs_to": "CascadeEvent",
+      "total_materials": 2,
+      "appeared_in": [
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M4": 40,
+        "M5": 100
+      },
+      "precision_per_material": {
+        "M4": "A2-semi-quantitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "impact_population": {
+      "belongs_to": "CascadeEvent",
+      "total_materials": 2,
+      "appeared_in": [
+        "M2",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 20,
+        "M5": 100
+      },
+      "precision_per_material": {
+        "M2": "A2-semi-quantitative",
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "keep_moderate"
+    },
+    "bus_load": {
+      "belongs_to": "Bus",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 87
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "bus_voltage": {
+      "belongs_to": "Bus",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 67
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "branch_capacity": {
+      "belongs_to": "Branch",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 73
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "branch_impedance": {
+      "belongs_to": "Branch",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 53
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "node_demand": {
+      "belongs_to": "Node_Junction",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 53
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "node_pressure": {
+      "belongs_to": "Node_Junction",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 53
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "SCADA_requirement": {
+      "belongs_to": "SCADA",
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 60
+      },
+      "precision_per_material": {
+        "M3": "A1-qualitative"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "simulation_model_type": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 80
+      },
+      "precision_per_material": {
+        "M1": "A1-qualitative"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "statistical_data": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M2"
+      ],
+      "best_pct_per_material": {
+        "M2": 60
+      },
+      "precision_per_material": {
+        "M2": "A2-semi-quantitative"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "cascade_step_depth": {
+      "belongs_to": "CascadeEvent",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 60
+      },
+      "precision_per_material": {
+        "M1": "A2-semi-quantitative"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "timeline": {
+      "belongs_to": "CascadeEvent",
+      "total_materials": 1,
+      "appeared_in": [
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M5": 100
+      },
+      "precision_per_material": {
+        "M5": "A1-qualitative"
+      },
+      "v2_decision": "keep_single_high"
+    },
+    "power_plant_type": {
+      "belongs_to": "Generator",
+      "total_materials": 1,
+      "appeared_in": [
+        "M2"
+      ],
+      "best_pct_per_material": {
+        "M2": 40
+      },
+      "precision_per_material": {
+        "M2": "A1-qualitative"
+      },
+      "v2_decision": "optional"
+    },
+    "pipe_length": {
+      "belongs_to": "Pipe_Link",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 47
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "optional"
+    },
+    "pipe_roughness": {
+      "belongs_to": "Pipe_Link",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 47
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "optional"
+    },
+    "pipe_material": {
+      "belongs_to": "Pipe_Link",
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M3": "A1-qualitative"
+      },
+      "v2_decision": "optional"
+    },
+    "leak_rate_limit": {
+      "belongs_to": "Pipe_Link",
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 20
+      },
+      "precision_per_material": {
+        "M3": "A2-semi-quantitative"
+      },
+      "v2_decision": "optional"
+    },
+    "tank_level": {
+      "belongs_to": "Tank",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 47
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "optional"
+    },
+    "station_grade": {
+      "belongs_to": "Bus|Pump",
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 20
+      },
+      "precision_per_material": {
+        "M3": "A2-semi-quantitative"
+      },
+      "v2_decision": "optional"
+    },
+    "pressure_satisfaction_pct": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 40
+      },
+      "precision_per_material": {
+        "M1": "A3-index"
+      },
+      "v2_decision": "optional"
+    },
+    "system_performance_Qt": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 33
+      },
+      "precision_per_material": {
+        "M1": "A4-simulation"
+      },
+      "v2_decision": "optional"
+    },
+    "stability_criterion": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 40
+      },
+      "precision_per_material": {
+        "M3": "A2-semi-quantitative"
+      },
+      "v2_decision": "optional"
+    },
+    "research_gaps": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M2"
+      ],
+      "best_pct_per_material": {
+        "M2": 40
+      },
+      "precision_per_material": {
+        "M2": "A1-qualitative"
+      },
+      "v2_decision": "optional"
+    },
+    "response_level": {
+      "belongs_to": "System",
+      "total_materials": 1,
+      "appeared_in": [
+        "M4"
+      ],
+      "best_pct_per_material": {
+        "M4": 40
+      },
+      "precision_per_material": {
+        "M4": "A2-semi-quantitative"
+      },
+      "v2_decision": "optional"
+    }
+  },
+  "summary": {
+    "total_unique_attributes": 39,
+    "by_decision": {
+      "required": 3,
+      "keep_single_high": 11,
+      "keep": 5,
+      "optional": 12,
+      "keep_moderate": 8
+    },
+    "v2_core_attrs": 16,
+    "v2_extended_attrs": 11,
+    "v2_optional_attrs": 12,
+    "attrs_per_entity": {
+      "System": 11,
+      "Pipe_Link": 5,
+      "Bus": 4,
+      "Pump": 4,
+      "CascadeEvent": 4,
+      "Branch": 2,
+      "Generator": 2,
+      "Node_Junction": 2,
+      "Tank": 2,
+      "BackupPower": 2,
+      "HazardType": 1,
+      "SCADA": 1
+    }
+  }
+}

@@ -1,0 +1,396 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Water-Power CPPS Ontology v2.0 — Bottom-Up from Actual Materials",
+  "version": "2.0.0",
+  "created": "2026-08-31",
+  "principle": "实体与关系仅保留各类源材料中可稳定提取的，删除先验知识中有但材料中提取不到的",
+
+  "definitions": {
+
+    "Bus": {
+      "description": "电力母线节点（学术论文中电力系统的基本建模单元，对应实际变电站母线）",
+      "source": "学术论文(IEEE测试系统)、技术报告",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^BUS_"},
+        "bus_number": {"type": "integer", "description": "IEEE标准编号，如Bus 30"},
+        "bus_type": {"type": "string", "enum": ["slack", "PV", "PQ"]},
+        "voltage_level_kv": {"type": "number"},
+        "area": {"type": "string"},
+        "zone": {"type": "string"},
+        "substation_name": {"type": "string", "description": "仅预案/报告中可获取"}
+      },
+      "required": ["id", "bus_number", "bus_type"]
+    },
+
+    "Generator": {
+      "description": "发电机节点（论文中通常简化为bus上的发电注入）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^GEN_"},
+        "bus_id": {"type": "string"},
+        "Pmax_MW": {"type": "number"},
+        "Pmin_MW": {"type": "number"},
+        "Qmax_MVar": {"type": "number"},
+        "Qmin_MVar": {"type": "number"},
+        "gen_type": {"type": "string", "enum": ["thermal", "hydro", "nuclear", "wind", "solar", "unknown"]}
+      },
+      "required": ["id", "bus_id"]
+    },
+
+    "Load": {
+      "description": "负荷节点（含泵站等供水负荷）",
+      "source": "学术论文、应急预案",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^LOAD_"},
+        "bus_id": {"type": "string"},
+        "P_demand_MW": {"type": "number"},
+        "Q_demand_MVar": {"type": "number"},
+        "load_type": {"type": "string", "enum": ["normal", "critical_water", "critical_hospital", "critical_communication"]}
+      },
+      "required": ["id", "bus_id"]
+    },
+
+    "Branch": {
+      "description": "电力线路/支路（论文中输配电线路的统一建模单元）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^BR_"},
+        "from_bus": {"type": "string"},
+        "to_bus": {"type": "string"},
+        "rating_MVA": {"type": "number"},
+        "reactance_pu": {"type": "number"},
+        "status": {"type": "string", "enum": ["online", "tripped", "overloaded"]},
+        "is_transformer": {"type": "boolean", "default": false}
+      },
+      "required": ["id", "from_bus", "to_bus"]
+    },
+
+    "Substation": {
+      "description": "变电站（预案/报告/新闻中的命名实体，论文中通常简化为Bus）",
+      "source": "应急预案、技术报告、新闻报道",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^SUB_"},
+        "name": {"type": "string"},
+        "voltage_level_kv": {"type": "number"},
+        "region": {"type": "string"},
+        "backup_power": {"type": "boolean"},
+        "corresponding_bus_ids": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["id", "name"]
+    },
+
+    "Junction": {
+      "description": "供水管网节点（EPANET中的Junction，对应实际用水点/管道交汇点）",
+      "source": "学术论文(EPANET测试系统)",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^JUNC_"},
+        "node_id": {"type": "string", "description": "EPANET中的节点编号"},
+        "elevation_m": {"type": "number"},
+        "base_demand_m3h": {"type": "number"},
+        "demand_pattern": {"type": "string"}
+      },
+      "required": ["id", "node_id"]
+    },
+
+    "Pipe": {
+      "description": "供水管段（EPANET中的Pipe）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^PIPE_"},
+        "from_node": {"type": "string"},
+        "to_node": {"type": "string"},
+        "length_m": {"type": "number"},
+        "diameter_mm": {"type": "number"},
+        "roughness": {"type": "number"},
+        "status": {"type": "string", "enum": ["open", "closed", "broken"]}
+      },
+      "required": ["id", "from_node", "to_node"]
+    },
+
+    "Pump": {
+      "description": "水泵（EPANET中的Pump，是水电耦合的核心接口）",
+      "source": "学术论文、应急预案、技术报告",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^PUMP_"},
+        "from_node": {"type": "string"},
+        "to_node": {"type": "string"},
+        "power_kw": {"type": "number"},
+        "head_curve": {"type": "string"},
+        "powered_by_bus_id": {"type": "string", "description": "供电母线ID——水电耦合的核心映射"},
+        "pump_type": {"type": "string", "enum": ["intake", "booster", "drainage", "unknown"]},
+        "backup_power_type": {"type": "string", "enum": ["none", "diesel", "UPS", "dual_feed"]},
+        "backup_duration_h": {"type": "number"}
+      },
+      "required": ["id", "from_node", "to_node"]
+    },
+
+    "Tank": {
+      "description": "蓄水池/高位水箱（EPANET中的Tank）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^TANK_"},
+        "node_id": {"type": "string"},
+        "elevation_m": {"type": "number"},
+        "init_level_m": {"type": "number"},
+        "min_level_m": {"type": "number"},
+        "max_level_m": {"type": "number"},
+        "diameter_m": {"type": "number"},
+        "volume_m3": {"type": "number"}
+      },
+      "required": ["id", "node_id"]
+    },
+
+    "Reservoir": {
+      "description": "水源/水库（EPANET中的Reservoir）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^RES_"},
+        "node_id": {"type": "string"},
+        "head_m": {"type": "number"}
+      },
+      "required": ["id", "node_id"]
+    },
+
+    "Valve": {
+      "description": "阀门（EPANET中的Valve，电动阀门是水电耦合的次要接口）",
+      "source": "学术论文、应急预案",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^VALVE_"},
+        "from_node": {"type": "string"},
+        "to_node": {"type": "string"},
+        "valve_type": {"type": "string", "enum": ["PRV", "PSV", "PBV", "FCV", "TCV", "GPV"]},
+        "setting": {"type": "number"},
+        "is_motorized": {"type": "boolean", "description": "是否电动（电动阀门依赖供电）"},
+        "powered_by_bus_id": {"type": "string"}
+      },
+      "required": ["id", "from_node", "to_node", "valve_type"]
+    },
+
+    "WaterFacility": {
+      "description": "水务设施命名实体（预案/报告/新闻中的水厂、泵站等）",
+      "source": "应急预案、技术报告、新闻报道",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^WF_"},
+        "name": {"type": "string"},
+        "facility_type": {"type": "string", "enum": ["water_treatment_plant", "pump_station", "reservoir_station"]},
+        "capacity_m3d": {"type": "number"},
+        "region": {"type": "string"},
+        "depends_on_substation": {"type": "string"},
+        "backup_power_type": {"type": "string", "enum": ["none", "diesel", "UPS", "dual_feed"]},
+        "backup_duration_h": {"type": "number"}
+      },
+      "required": ["id", "name", "facility_type"]
+    },
+
+    "CyberNode": {
+      "description": "信息层节点（论文中对SCADA/PLC/RTU等的统一抽象）",
+      "source": "学术论文(CPS建模)",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^CYBER_"},
+        "node_type": {"type": "string", "enum": ["SCADA", "PLC", "RTU", "PMU", "Sensor", "Actuator", "Control_Center"]},
+        "protocol": {"type": "string", "enum": ["DNP3", "IEC61850", "IEC104", "Modbus", "OPC-UA", "unknown"]},
+        "coupled_physical_node_id": {"type": "string", "description": "耦合的物理节点ID"},
+        "coupling_type": {"type": "string", "enum": ["one-to-one", "one-to-many", "random", "unknown"]}
+      },
+      "required": ["id", "node_type"]
+    },
+
+    "CommLink": {
+      "description": "通信链路（论文中对通信连接的统一抽象）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^COMMLINK_"},
+        "from_cyber_node": {"type": "string"},
+        "to_cyber_node": {"type": "string"},
+        "link_type": {"type": "string", "enum": ["wired", "wireless", "mixed", "unknown"]},
+        "bandwidth_mbps": {"type": "number"},
+        "latency_ms": {"type": "number"}
+      },
+      "required": ["id", "from_cyber_node", "to_cyber_node"]
+    },
+
+    "Hazard": {
+      "description": "扰动/威胁源",
+      "source": "学术论文、应急预案、新闻报道",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^HAZ_"},
+        "hazard_type": {"type": "string", "enum": ["earthquake", "flood", "typhoon", "ice_storm", "heat_wave", "FDI_attack", "DoS_attack", "command_injection", "equipment_failure", "misoperation"]},
+        "hazard_category": {"type": "string", "enum": ["natural", "cyber", "equipment", "human"]},
+        "intensity": {"type": "number"},
+        "probability": {"type": "number"}
+      },
+      "required": ["id", "hazard_type", "hazard_category"]
+    },
+
+    "CascadeEvent": {
+      "description": "级联失效事件（包含完整的级联因果链）",
+      "source": "学术论文、新闻报道、应急预案",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^CE_"},
+        "name": {"type": "string"},
+        "trigger_hazard_id": {"type": "string"},
+        "cascade_steps": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/CascadeStep"}
+        },
+        "total_failed_count": {"type": "integer"},
+        "load_loss_MW": {"type": "number"},
+        "water_shortage_m3d": {"type": "number"},
+        "affected_population": {"type": "integer"},
+        "recovery_time_h": {"type": "number"},
+        "reference_source": {"type": "string"}
+      },
+      "required": ["id", "name"]
+    },
+
+    "CascadeStep": {
+      "description": "级联失效的单个步骤",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "step_order": {"type": "integer"},
+        "failed_component_id": {"type": "string"},
+        "failed_component_type": {"type": "string", "enum": ["bus", "branch", "generator", "load", "pump", "valve", "tank", "cyber_node", "comm_link"]},
+        "failure_cause": {"type": "string", "enum": ["overload", "loss_of_power", "loss_of_control", "loss_of_monitoring", "protection_trip", "voltage_collapse", "frequency_deviation", "hydraulic_imbalance", "low_pressure"]},
+        "propagation_mechanism": {"type": "string"},
+        "affected_downstream_ids": {"type": "array", "items": {"type": "string"}},
+        "time_after_trigger_s": {"type": "number"}
+      },
+      "required": ["step_order", "failed_component_id", "failure_cause"]
+    },
+
+    "SimulationModel": {
+      "description": "仿真模型（每篇论文必有的核心信息）",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^MODEL_"},
+        "power_model_type": {"type": "string", "enum": ["DC_PF", "AC_PF", "DistFlow", "Transient_Stability", "OPF", "unknown"]},
+        "water_model_type": {"type": "string", "enum": ["EPANET", "WNTR", "custom_hydraulic", "pressure_driven", "unknown"]},
+        "coupling_model_type": {"type": "string", "enum": ["load_bus_pump_mapping", "functional_coupling", "topological_coupling", "agent_based", "unknown"]},
+        "test_system_power": {"type": "string", "description": "如IEEE 39-bus, IEEE 118-bus"},
+        "test_system_water": {"type": "string", "description": "如Net3, Net6, custom"},
+        "simulation_tool": {"type": "string", "description": "如MATPOWER, PowerWorld, WNTR, PSS/E"}
+      },
+      "required": ["id"]
+    },
+
+    "ResilienceMetric": {
+      "description": "韧性评估指标",
+      "source": "学术论文、技术报告",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^METRIC_"},
+        "metric_name": {"type": "string"},
+        "formula": {"type": "string"},
+        "dimension": {"type": "string", "enum": ["robustness", "rapidity", "redundancy", "resourcefulness", "comprehensive"]},
+        "applied_system": {"type": "string", "enum": ["power", "water", "coupled", "cyber"]}
+      },
+      "required": ["id", "metric_name"]
+    },
+
+    "OptMethod": {
+      "description": "优化方法",
+      "source": "学术论文",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^OPT_"},
+        "method_type": {"type": "string", "enum": ["robust_optimization", "stochastic_optimization", "DRO", "MILP", "DRL", "genetic_algorithm", "agent_based"]},
+        "objective": {"type": "string"},
+        "constraints": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["id", "method_type"]
+    },
+
+    "Reference": {
+      "description": "文献来源（所有实体的溯源基础）",
+      "source": "所有材料",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^REF_"},
+        "title": {"type": "string"},
+        "authors": {"type": "string"},
+        "year": {"type": "integer"},
+        "source_type": {"type": "string", "enum": ["journal_paper", "conference_paper", "technical_report", "standard", "emergency_plan", "news", "white_paper"]},
+        "doi": {"type": "string"},
+        "keywords": {"type": "array", "items": {"type": "string"}},
+        "abstract": {"type": "string"}
+      },
+      "required": ["id", "title", "source_type"]
+    }
+  },
+
+  "relationships": {
+    "POWERED_BY": {
+      "description": "水泵/阀门由电力母线供电（水电耦合核心关系）",
+      "source": "学术论文、技术报告",
+      "from": ["Pump", "Valve"],
+      "to": "Bus",
+      "properties": {"is_primary": {"type": "boolean"}}
+    },
+    "AFFECTS_WATER_SUPPLY": {
+      "description": "电力失效影响供水服务",
+      "source": "学术论文、应急预案",
+      "from": "Bus",
+      "to": ["Junction", "WaterFacility"],
+      "properties": {"mechanism": {"type": "string"}, "delay_s": {"type": "number"}}
+    },
+    "CONNECTS_BUS": {
+      "description": "母线间通过线路连接",
+      "source": "学术论文",
+      "from": "Bus", "to": "Bus", "via": "Branch"
+    },
+    "CONNECTS_NODE": {
+      "description": "水网节点间通过管段连接",
+      "source": "学术论文",
+      "from": "Junction", "to": "Junction", "via": "Pipe"
+    },
+    "GENERATES_AT": {"from": "Generator", "to": "Bus"},
+    "CONSUMES_AT": {"from": "Load", "to": "Bus"},
+    "PUMPS_THROUGH": {"from": "Pump", "to": "Pipe"},
+    "REGULATES": {"from": "Valve", "to": "Pipe"},
+    "MONITORS_PHYSICAL": {
+      "description": "信息节点监测物理节点",
+      "source": "学术论文",
+      "from": "CyberNode", "to": ["Bus", "Junction", "Pump", "Generator"]
+    },
+    "CONTROLS_PHYSICAL": {
+      "description": "信息节点控制物理节点",
+      "source": "学术论文",
+      "from": "CyberNode", "to": ["Generator", "Pump", "Valve", "Branch"]
+    },
+    "COUPLED_WITH": {
+      "description": "信息节点与物理节点耦合",
+      "source": "学术论文",
+      "from": "CyberNode", "to": ["Bus", "Junction"]
+    },
+    "COMMUNICATES_WITH": {"from": "CyberNode", "to": "CyberNode", "via": "CommLink"},
+    "TRIGGERS_FAILURE": {"from": "Hazard", "to": ["Bus", "Branch", "Pump", "CyberNode", "CommLink"]},
+    "CASCADES_TO": {
+      "description": "级联传播（核心关系）",
+      "source": "学术论文、应急预案、新闻",
+      "from": ["Bus", "Branch", "Pump", "CyberNode"],
+      "to": ["Bus", "Branch", "Pump", "Junction", "CyberNode"],
+      "properties": {"mechanism": {"type": "string"}, "probability": {"type": "number"}}
+    },
+    "DESCRIBED_IN": {"from": "Any", "to": "Reference"},
+    "APPLIES_MODEL": {"from": "Reference", "to": "SimulationModel"},
+    "MEASURED_BY": {"from": "Reference", "to": "ResilienceMetric"}
+  }
+}

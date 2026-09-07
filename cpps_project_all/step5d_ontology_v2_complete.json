@@ -1,0 +1,1054 @@
+{
+  "step": "5d",
+  "title": "Water-Power CPS Ontology v2.0 — Complete Definition",
+  "date": "2026-09-06",
+  "version": "2.0",
+  "design_principle": "Bottom-up from material evidence, not top-down from prior knowledge",
+  "source_steps": {
+    "5a_entity": "step5a_entity_merge.json",
+    "5b_relation": "step5b_relation_merge.json",
+    "5c_attribute": "step5c_attribute_merge.json"
+  },
+  "entities": {
+    "Bus": {
+      "label_zh": "母线/变电站",
+      "layer": "power",
+      "v2_decision": "required",
+      "total_materials": 5,
+      "granularity": "L4-node (M1) / L2-station (M2-M5)",
+      "description": "电力系统节点。论文中为Bus节点，报告/标准/预案/事件中为Substation站级。通过CONTAINS映射双向关联。",
+      "station_alias": "Substation",
+      "attributes": [
+        "voltage_level_kV",
+        "bus_load",
+        "bus_voltage"
+      ]
+    },
+    "Branch": {
+      "label_zh": "线路/支路",
+      "layer": "power",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L4-node (M1) / L2-station (M3)",
+      "description": "电力系统连接支路。论文中为Branch，标准中为TransmissionLine。统一为Branch。",
+      "station_alias": "TransmissionLine",
+      "attributes": [
+        "branch_capacity",
+        "branch_impedance"
+      ]
+    },
+    "Generator": {
+      "label_zh": "发电机/电厂",
+      "layer": "power",
+      "v2_decision": "required",
+      "total_materials": 4,
+      "granularity": "L4-node (M1) / L2-station (M2/M3/M5)",
+      "description": "发电机组。论文中为Generator节点，报告/事件中为PowerPlant站级。",
+      "station_alias": "PowerPlant",
+      "attributes": [
+        "generator_output",
+        "power_plant_type"
+      ]
+    },
+    "Pump": {
+      "label_zh": "水泵/泵站",
+      "layer": "water",
+      "v2_decision": "required",
+      "total_materials": 5,
+      "granularity": "L4-node (M1) / L2-station (M2-M5)",
+      "description": "水泵设备。论文中为Pump节点，报告/标准/预案/事件中为PumpStation站级。水电耦合核心锚点之一。",
+      "station_alias": "PumpStation",
+      "attributes": [
+        "pump_power",
+        "pump_head",
+        "pump_flow"
+      ]
+    },
+    "Node_Junction": {
+      "label_zh": "水力节点/水厂",
+      "layer": "water",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "granularity": "L4-node (M1) / L2-station (M2/M3)",
+      "description": "给水管网节点。论文中为Node/Junction，报告中为WaterTreatmentPlant站级。",
+      "station_alias": "WaterTreatmentPlant",
+      "attributes": [
+        "node_demand",
+        "node_pressure"
+      ]
+    },
+    "Pipe_Link": {
+      "label_zh": "管道/管段",
+      "layer": "water",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L4-node (M1) / L2-station (M3)",
+      "description": "给水管网连接管段。论文中为Pipe/Link，标准中为Pipeline。",
+      "station_alias": "Pipeline",
+      "attributes": [
+        "pipe_diameter",
+        "pipe_length",
+        "pipe_roughness",
+        "pipe_material",
+        "leak_rate_limit"
+      ]
+    },
+    "Tank": {
+      "label_zh": "水池/水库",
+      "layer": "water",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L4-node (M1) / L2-station (M3)",
+      "description": "蓄水设施。论文中为Tank节点，标准中为Tank/Reservoir站级。",
+      "station_alias": "Tank",
+      "attributes": [
+        "tank_capacity",
+        "tank_level"
+      ]
+    },
+    "Valve": {
+      "label_zh": "阀门",
+      "layer": "water",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L4-node (M1) / L3-device (M3)",
+      "description": "管网控制阀门。论文中为Valve节点（通常简化为Pipe状态），标准中有独立设备级描述。",
+      "station_alias": "Valve",
+      "attributes": []
+    },
+    "SCADA": {
+      "label_zh": "SCADA系统",
+      "layer": "cyber",
+      "v2_decision": "required",
+      "total_materials": 4,
+      "granularity": "L1-mention (M1/M2/M5) / L1-requirement (M3)",
+      "description": "数据采集与监控系统。所有材料类型均提及，但精度从定性提及到标准要求不等。",
+      "station_alias": null,
+      "attributes": [
+        "SCADA_requirement"
+      ]
+    },
+    "CyberNode": {
+      "label_zh": "信息节点",
+      "layer": "cyber",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "granularity": "L4-node (M1) / L3-device (M2/M3)",
+      "description": "信息层设备统一节点。论文中包含PLC/RTU/PMU/Sensor/Actuator等子类型，v2.0统一为CyberNode+type属性。",
+      "station_alias": "CyberDevice",
+      "sub_types": [
+        "scada",
+        "plc",
+        "rtu",
+        "pmu",
+        "sensor",
+        "actuator"
+      ],
+      "attributes": []
+    },
+    "CyberEdge": {
+      "label_zh": "通信链路",
+      "layer": "cyber",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "granularity": "L4-node (M1 only)",
+      "description": "信息层通信连接。仅论文中出现(FiberLink/WirelessLink)，v2.0降级为可选。",
+      "station_alias": null,
+      "sub_types": [
+        "fiber",
+        "wireless"
+      ],
+      "attributes": []
+    },
+    "HazardType": {
+      "label_zh": "扰动类型",
+      "layer": "hazard",
+      "v2_decision": "required",
+      "total_materials": 4,
+      "granularity": "L1-system (M2-M5)",
+      "description": "外部扰动分类。报告/标准/预案/事件均有分类体系，论文中用概率模型表达。",
+      "station_alias": null,
+      "attributes": [
+        "hazard_category"
+      ],
+      "common_values": [
+        "earthquake",
+        "flood",
+        "typhoon",
+        "cyber_attack",
+        "equipment_failure",
+        "ice_disaster"
+      ]
+    },
+    "BackupPower": {
+      "label_zh": "备用电源",
+      "layer": "resilience",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L3-device (M3/M4)",
+      "description": "备用供电设施。标准要求配备，预案详细描述类型和持续时间。",
+      "station_alias": null,
+      "attributes": [
+        "backup_power_type",
+        "backup_duration_h"
+      ],
+      "common_values": [
+        "diesel_generator",
+        "UPS",
+        "dual_power_supply"
+      ]
+    },
+    "WaterSystem": {
+      "label_zh": "供水系统",
+      "layer": "system",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L1-system (M4/M5)",
+      "description": "供水系统整体。预案和事件中的系统级描述实体。",
+      "station_alias": null,
+      "attributes": []
+    },
+    "NaturalGasFacility": {
+      "label_zh": "天然气设施",
+      "layer": "system",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "granularity": "L2-station (M2/M5)",
+      "description": "天然气系统设施。报告和事件中提及气-电耦合，作为扩展互联基础设施。",
+      "station_alias": null,
+      "attributes": []
+    },
+    "Reservoir": {
+      "label_zh": "水库",
+      "layer": "water",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "description": "水源水库。仅论文中出现，可合并到Node_Junction(type=reservoir)。",
+      "station_alias": null,
+      "attributes": [],
+      "granularity": "L4-node (M1 only)"
+    },
+    "DMA_District": {
+      "label_zh": "DMA分区",
+      "layer": "water",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "description": "独立计量区域。仅标准中出现，管网管理分区概念。",
+      "station_alias": null,
+      "attributes": [],
+      "granularity": "L2-station (M3 only)"
+    },
+    "ResponseLevel": {
+      "label_zh": "响应等级",
+      "layer": "system",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "description": "应急响应等级。仅预案中出现(I/II/III/IV级)。",
+      "station_alias": null,
+      "attributes": [
+        "response_level"
+      ],
+      "granularity": "L1-system (M4 only)"
+    }
+  },
+  "relations": {
+    "POWERED_BY": {
+      "label_zh": "供电",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "domain": "Pump",
+      "range": "Bus",
+      "layer": "cross-layer",
+      "is_anchor": true,
+      "description": "水泵由母线供电。水电耦合核心锚点关系，几乎所有论文明确给出映射表。",
+      "explicitness_per_material": {
+        "M1": "R3-formula (映射表/公式)",
+        "M2": "R1-qualitative (定性依赖描述)",
+        "M4": "R2-named (具名站间供电映射)"
+      },
+      "neo4j_type": "POWERED_BY"
+    },
+    "CASCADES_TO": {
+      "label_zh": "级联传播",
+      "v2_decision": "required",
+      "total_materials": 4,
+      "domain": "Bus|Pump|Generator",
+      "range": "Pump|Node_Junction|Bus",
+      "layer": "cross-layer",
+      "is_anchor": true,
+      "description": "跨层级联故障传播。论文用物理模型，报告/预案/事件用因果链叙述。",
+      "explicitness_per_material": {
+        "M1": "R3-formula (DC flow + EPANET)",
+        "M2": "R1-qualitative (因果叙述)",
+        "M4": "R1-narrative (预案级联链)",
+        "M5": "R1-narrative (事件完整级联链)"
+      },
+      "neo4j_type": "CASCADES_TO"
+    },
+    "TRIGGERS": {
+      "label_zh": "触发",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "domain": "HazardType",
+      "range": "Bus|Pump|Generator|Pipe_Link",
+      "layer": "hazard→physical",
+      "description": "外部扰动触发物理层组件故障。",
+      "explicitness_per_material": {
+        "M1": "R4-probabilistic (故障概率模型)",
+        "M2": "R1-qualitative (定性触发描述)",
+        "M5": "R1-narrative (事件触发链)"
+      },
+      "neo4j_type": "TRIGGERS"
+    },
+    "CONTROLS": {
+      "label_zh": "控制",
+      "v2_decision": "required",
+      "total_materials": 4,
+      "domain": "SCADA|CyberNode",
+      "range": "Bus|Pump|Generator",
+      "layer": "cyber→physical",
+      "description": "信息层控制物理层。SCADA/CyberNode对电力/水力设备的控制指令。",
+      "explicitness_per_material": {
+        "M1": "R2-simplified (简化控制模型)",
+        "M2": "R1-qualitative (提及控制能力)",
+        "M3": "R1-qualitative-requirement (标准要求控制能力)",
+        "M5": "R1-narrative (事件中控制失效)"
+      },
+      "neo4j_type": "CONTROLS"
+    },
+    "MONITORS": {
+      "label_zh": "监测",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "domain": "SCADA|CyberNode",
+      "range": "Bus|Pump|Node_Junction",
+      "layer": "cyber→physical",
+      "description": "信息层监测物理层。SCADA/CyberNode对设备状态的监测。",
+      "explicitness_per_material": {
+        "M1": "R2-simplified (简化监测模型)",
+        "M3": "R1-qualitative-requirement (标准要求监测能力)"
+      },
+      "neo4j_type": "MONITORS"
+    },
+    "CONNECTS_TO": {
+      "label_zh": "拓扑连接",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "domain": "Bus|Node_Junction|CyberNode",
+      "range": "Bus|Node_Junction|CyberNode",
+      "layer": "intra-layer",
+      "description": "同层拓扑连接。电力层(Bus↔Bus via Branch)、水力层(Node↔Node via Pipe)、信息层(CyberNode↔CyberNode via CyberEdge)。",
+      "explicitness_per_material": {
+        "M1": "R3-formula (邻接矩阵/拓扑矩阵)"
+      },
+      "layer_type_values": [
+        "power_branch",
+        "water_pipe",
+        "cyber_comm"
+      ],
+      "neo4j_type": "CONNECTS_TO"
+    },
+    "HAS_BACKUP": {
+      "label_zh": "配备备用电源",
+      "v2_decision": "keep",
+      "total_materials": 2,
+      "domain": "Pump|Bus",
+      "range": "BackupPower",
+      "layer": "resilience",
+      "description": "设施配备备用电源。标准要求+预案详细描述。",
+      "explicitness_per_material": {
+        "M3": "R1-qualitative-requirement (标准强制要求)",
+        "M4": "R2-named (预案具名备用电源)"
+      },
+      "neo4j_type": "HAS_BACKUP"
+    },
+    "REQUIRES_SCADA": {
+      "label_zh": "要求SCADA监控",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "domain": "Pump|Bus",
+      "range": "SCADA",
+      "layer": "standard-requirement",
+      "description": "标准要求关键设施配备SCADA监控。M3标准独有关系。",
+      "explicitness_per_material": {
+        "M3": "R1-qualitative-requirement (60%)"
+      },
+      "neo4j_type": "REQUIRES_SCADA"
+    },
+    "DEPENDS_ON": {
+      "label_zh": "系统级依赖",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "domain": "WaterSystem|Pump",
+      "range": "Generator|Bus",
+      "layer": "cross-layer",
+      "description": "水系统对电力系统的系统级定性依赖。与POWERED_BY的区别：DEPENDS_ON是系统级定性描述，POWERED_BY是设备级精确映射。",
+      "neo4j_type": "DEPENDS_ON"
+    },
+    "AMPLIFIES": {
+      "label_zh": "正反馈放大",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "domain": "Bus|Pump",
+      "range": "Bus|Pump",
+      "layer": "cross-layer",
+      "description": "正反馈放大效应。事件独有，如停电→泵停→水压降→消防失效→火灾→更大停电。",
+      "neo4j_type": "AMPLIFIES"
+    },
+    "MUST_SATISFY": {
+      "label_zh": "必须满足准则",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "domain": "System",
+      "range": "Criterion",
+      "layer": "standard-mandatory",
+      "description": "标准强制满足安全准则(N-1, Kp>=1.05等)。M3标准独有。",
+      "neo4j_type": "MUST_SATISFY"
+    },
+    "MUST_PREVENT": {
+      "label_zh": "必须防止级联",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "domain": "System",
+      "range": "CascadeFailure",
+      "layer": "standard-mandatory",
+      "description": "标准强制防止级联故障。M3标准独有。",
+      "neo4j_type": "MUST_PREVENT"
+    }
+  },
+  "attributes": {
+    "voltage_level_kV": {
+      "belongs_to": "Bus",
+      "data_type": "float",
+      "unit": "kV",
+      "v2_decision": "required",
+      "total_materials": 5,
+      "precision_range": "A1-A3 (M1-M5)",
+      "common_values": [
+        10,
+        35,
+        110,
+        220,
+        500
+      ]
+    },
+    "bus_load": {
+      "belongs_to": "Bus",
+      "data_type": "float",
+      "unit": "MW or pu",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)",
+      "description": "论文仿真参数，标幺值或MW"
+    },
+    "bus_voltage": {
+      "belongs_to": "Bus",
+      "data_type": "float",
+      "unit": "pu",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)",
+      "description": "论文仿真参数，标幺值"
+    },
+    "branch_capacity": {
+      "belongs_to": "Branch",
+      "data_type": "float",
+      "unit": "MW or pu",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "branch_impedance": {
+      "belongs_to": "Branch",
+      "data_type": "float",
+      "unit": "pu",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "generator_output": {
+      "belongs_to": "Generator",
+      "data_type": "float",
+      "unit": "MW or pu",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "precision_range": "A2-A4 (M1-M3)"
+    },
+    "power_plant_type": {
+      "belongs_to": "Generator",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A1 (M2 only)",
+      "common_values": [
+        "thermal",
+        "hydro",
+        "nuclear",
+        "wind",
+        "solar"
+      ]
+    },
+    "pump_power": {
+      "belongs_to": "Pump",
+      "data_type": "float",
+      "unit": "kW",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "precision_range": "A2-A4 (M1-M3)"
+    },
+    "pump_head": {
+      "belongs_to": "Pump",
+      "data_type": "float",
+      "unit": "m",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A3-A4 (M1/M3)"
+    },
+    "pump_flow": {
+      "belongs_to": "Pump",
+      "data_type": "float",
+      "unit": "m³/s",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A3-A4 (M1/M3)"
+    },
+    "node_demand": {
+      "belongs_to": "Node_Junction",
+      "data_type": "float",
+      "unit": "m³/s",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "node_pressure": {
+      "belongs_to": "Node_Junction",
+      "data_type": "float",
+      "unit": "m or MPa",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "pipe_diameter": {
+      "belongs_to": "Pipe_Link",
+      "data_type": "float",
+      "unit": "mm",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A3-A4 (M1/M3)"
+    },
+    "pipe_length": {
+      "belongs_to": "Pipe_Link",
+      "data_type": "float",
+      "unit": "m",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "pipe_roughness": {
+      "belongs_to": "Pipe_Link",
+      "data_type": "float",
+      "unit": "dimensionless",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "pipe_material": {
+      "belongs_to": "Pipe_Link",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A1 (M3 only)",
+      "common_values": [
+        "cast_iron",
+        "steel",
+        "PVC",
+        "concrete"
+      ]
+    },
+    "leak_rate_limit": {
+      "belongs_to": "Pipe_Link",
+      "data_type": "float",
+      "unit": "%",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A2 (M3 only)",
+      "description": "标准漏损率限值(如≤12%)"
+    },
+    "tank_capacity": {
+      "belongs_to": "Tank",
+      "data_type": "float",
+      "unit": "m³",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "precision_range": "A2-A4 (M1-M3)"
+    },
+    "tank_level": {
+      "belongs_to": "Tank",
+      "data_type": "float",
+      "unit": "m",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "backup_power_type": {
+      "belongs_to": "BackupPower",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "required",
+      "total_materials": 4,
+      "precision_range": "A1-A2 (M2-M5)",
+      "common_values": [
+        "diesel_generator",
+        "UPS",
+        "dual_power_supply"
+      ]
+    },
+    "backup_duration_h": {
+      "belongs_to": "BackupPower",
+      "data_type": "float",
+      "unit": "h",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "precision_range": "A1-A2 (M3-M5)"
+    },
+    "station_grade": {
+      "belongs_to": "Bus|Pump",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A2 (M3 only)",
+      "common_values": [
+        "grade_1",
+        "grade_2",
+        "grade_3"
+      ]
+    },
+    "hazard_category": {
+      "belongs_to": "HazardType",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "required",
+      "total_materials": 4,
+      "precision_range": "A1 (M2-M5)",
+      "common_values": [
+        "natural",
+        "technological",
+        "malicious"
+      ]
+    },
+    "SCADA_requirement": {
+      "belongs_to": "SCADA",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A1 (M3 only)",
+      "description": "标准对SCADA监控的要求描述"
+    },
+    "simulation_model_type": {
+      "belongs_to": "System",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A1 (M1 only)",
+      "common_values": [
+        "DC_power_flow",
+        "AC_power_flow",
+        "EPANET",
+        "coupled_simulation"
+      ]
+    },
+    "load_shedding_pct": {
+      "belongs_to": "System",
+      "data_type": "float",
+      "unit": "%",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A2-A3 (M1/M2)"
+    },
+    "pressure_satisfaction_pct": {
+      "belongs_to": "System",
+      "data_type": "float",
+      "unit": "%",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A3 (M1 only)"
+    },
+    "resilience_index": {
+      "belongs_to": "System",
+      "data_type": "float",
+      "unit": "dimensionless",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A2-A4 (M1/M2)"
+    },
+    "system_performance_Qt": {
+      "belongs_to": "System",
+      "data_type": "float",
+      "unit": "dimensionless",
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A4 (M1 only)"
+    },
+    "stability_criterion": {
+      "belongs_to": "System",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A2 (M3 only)",
+      "description": "如N-1准则, Kp>=1.05"
+    },
+    "statistical_data": {
+      "belongs_to": "System",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A2 (M2 only)",
+      "description": "报告中的统计数据描述"
+    },
+    "research_gaps": {
+      "belongs_to": "System",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A1 (M2 only)",
+      "description": "报告识别的研究空白"
+    },
+    "response_level": {
+      "belongs_to": "System",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "optional",
+      "total_materials": 1,
+      "precision_range": "A2 (M4 only)",
+      "common_values": [
+        "I",
+        "II",
+        "III",
+        "IV"
+      ]
+    },
+    "MW_lost": {
+      "belongs_to": "System",
+      "data_type": "float",
+      "unit": "MW",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A2 (M2/M5)"
+    },
+    "recovery_time": {
+      "belongs_to": "System",
+      "data_type": "float",
+      "unit": "h",
+      "v2_decision": "keep",
+      "total_materials": 3,
+      "precision_range": "A1-A2 (M2/M4/M5)"
+    },
+    "cascade_step_depth": {
+      "belongs_to": "CascadeEvent",
+      "data_type": "int",
+      "unit": "step",
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A2 (M1 only)",
+      "description": "论文中级联仿真步数"
+    },
+    "cascade_chain_narrative": {
+      "belongs_to": "CascadeEvent",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A1-A2 (M4/M5)",
+      "description": "预案/事件中的级联链叙述"
+    },
+    "timeline": {
+      "belongs_to": "CascadeEvent",
+      "data_type": "string",
+      "unit": null,
+      "v2_decision": "keep_single_high",
+      "total_materials": 1,
+      "precision_range": "A1 (M5 only)",
+      "description": "事件中的时间线(如2025-12-23 15:00)"
+    },
+    "impact_population": {
+      "belongs_to": "CascadeEvent",
+      "data_type": "int",
+      "unit": "人",
+      "v2_decision": "keep_moderate",
+      "total_materials": 2,
+      "precision_range": "A1-A2 (M2/M5)"
+    }
+  },
+  "simplification_mapping": {
+    "description": "将行业术语映射为本体标准实体，确保跨材料统一表达",
+    "power_mapping": {
+      "Substation": "Bus",
+      "PowerPlant": "Generator (on Bus)",
+      "TransmissionLine": "Branch",
+      "DistributionLine": "Branch",
+      "Transformer": "Branch (impedance attribute)",
+      "Breaker": "Branch (on/off state attribute)",
+      "CapacitorBank": "Bus (reactive_injection attribute)"
+    },
+    "water_mapping": {
+      "PumpStation": "Pump + POWERED_BY→Bus",
+      "WaterTreatmentPlant": "Node_Junction (type=source)",
+      "IntakePumpStation": "Pump (type=intake) + POWERED_BY→Bus",
+      "BoosterPumpStation": "Pump (type=booster) + POWERED_BY→Bus",
+      "DrainagePumpStation": "Pump (type=drainage) + POWERED_BY→Bus",
+      "Pipeline": "Pipe_Link",
+      "Valve": "Pipe_Link (valve_state attribute) or Valve entity",
+      "Tank_Reservoir": "Tank",
+      "Hydrant": "Node_Junction (type=demand)",
+      "Well": "Node_Junction (type=well)",
+      "Reservoir": "Node_Junction (type=reservoir) or Tank"
+    },
+    "cyber_mapping": {
+      "SCADA_Server": "CyberNode (type=scada) or SCADA",
+      "PLC": "CyberNode (type=plc)",
+      "RTU": "CyberNode (type=rtu)",
+      "PMU": "CyberNode (type=pmu)",
+      "Sensor": "CyberNode (type=sensor)",
+      "Actuator": "CyberNode (type=actuator)",
+      "FiberLink": "CyberEdge (type=fiber) or CONNECTS_TO(layer_type=cyber_comm)",
+      "WirelessLink": "CyberEdge (type=wireless) or CONNECTS_TO(layer_type=cyber_comm)"
+    },
+    "station_node_bidirectional": {
+      "rule": "Substation CONTAINS Bus; PumpStation CONTAINS Pump; PowerPlant CONTAINS Generator",
+      "description": "站级实体与节点级实体通过CONTAINS关系双向映射，支持跨粒度查询",
+      "neo4j_example": "MATCH (ps:PumpStation)-[:CONTAINS]->(p:Pump)-[:POWERED_BY]->(b:Bus)<-[:CONTAINS]-(ss:Substation)"
+    }
+  },
+  "material_extraction_strategies": {
+    "M1_academic_paper": {
+      "entity_granularity": "L4-node",
+      "entity_types": [
+        "Bus",
+        "Branch",
+        "Generator",
+        "Pump",
+        "Node_Junction",
+        "Pipe_Link",
+        "Tank",
+        "CyberNode",
+        "CyberEdge"
+      ],
+      "relation_explicitness": "R3-formula / R4-probabilistic",
+      "attribute_precision": "A4-simulation (pu values, model parameters)",
+      "key_extracts": [
+        "POWERED_BY mapping table (Pump→Bus)",
+        "Network topology (adjacency matrix)",
+        "Simulation model type and parameters",
+        "Cascade simulation results (load_shedding, pressure_satisfaction)",
+        "Resilience index formula and values"
+      ],
+      "extraction_prompt_focus": "Extract node-level entities with IDs (Bus-1, Pump-3), topology connections, and POWERED_BY mapping. Capture simulation parameters in pu units.",
+      "cascade_expression": "model (DC flow + EPANET coupled simulation)"
+    },
+    "M2_report": {
+      "entity_granularity": "L2-station",
+      "entity_types": [
+        "Substation→Bus",
+        "PumpStation→Pump",
+        "WaterTreatmentPlant→Node_Junction",
+        "PowerPlant→Generator",
+        "HazardType"
+      ],
+      "relation_explicitness": "R1-qualitative",
+      "attribute_precision": "A1-A2 (qualitative, statistics)",
+      "key_extracts": [
+        "System-level dependency descriptions (water depends on power)",
+        "Hazard category and historical statistics",
+        "Research gaps and policy recommendations",
+        "Backup power type mentions"
+      ],
+      "extraction_prompt_focus": "Extract station-level entities with names (XX变电站, XX泵站). Capture qualitative dependency descriptions. Map to canonical entity names.",
+      "cascade_expression": "narrative (causal chain without formula)"
+    },
+    "M3_standard": {
+      "entity_granularity": "L2-station + L3-device",
+      "entity_types": [
+        "PumpStation→Pump",
+        "Pump",
+        "Valve",
+        "BackupPower",
+        "SCADA"
+      ],
+      "relation_explicitness": "R1-qualitative-requirement / R1-qualitative-mandatory",
+      "attribute_precision": "A3-rated (design parameters, safety thresholds)",
+      "key_extracts": [
+        "Mandatory requirements (N-1, backup power, SCADA monitoring)",
+        "Safety thresholds (Kp>=1.05, leak_rate<=12%)",
+        "Design parameters (pump rated power/head/flow, pipe diameter)",
+        "Facility classification (station grade)"
+      ],
+      "extraction_prompt_focus": "Extract mandatory requirements with SHALL/MUST keywords. Capture rated parameters and safety thresholds. Distinguish requirement from recommendation.",
+      "cascade_expression": "requirement (must prevent cascading failure)"
+    },
+    "M4_emergency_plan": {
+      "entity_granularity": "L2-station",
+      "entity_types": [
+        "PumpStation→Pump",
+        "Substation→Bus",
+        "HazardType",
+        "BackupPower",
+        "ResponseLevel"
+      ],
+      "relation_explicitness": "R2-named (concrete facility names)",
+      "attribute_precision": "A2-semi-quantitative",
+      "key_extracts": [
+        "NAMED facility interdependency (XX泵站由XX变电站供电)",
+        "Backup power details (type, duration, capacity)",
+        "Response level classification (I/II/III/IV)",
+        "Cascade chain narrative (qualitative causal chain)"
+      ],
+      "extraction_prompt_focus": "Extract NAMED facility mappings with specific station names. Capture backup power details. Map station names to canonical entities.",
+      "cascade_expression": "narrative (planned response chain)"
+    },
+    "M5_event": {
+      "entity_granularity": "L2-station",
+      "entity_types": [
+        "Substation→Bus",
+        "PumpStation→Pump",
+        "HazardType",
+        "SCADA",
+        "NaturalGasFacility"
+      ],
+      "relation_explicitness": "R0-implicit / R1-narrative",
+      "attribute_precision": "A1-qualitative (impact statistics)",
+      "key_extracts": [
+        "COMPLETE cascade chain with timeline",
+        "Impact statistics (population, MW lost, recovery time)",
+        "AMPLIFIES positive feedback loops",
+        "Cyber attack kill chain details (if applicable)"
+      ],
+      "extraction_prompt_focus": "Extract complete cascade chain with timeline and impact data. Capture AMPLIFIES feedback loops. Reconstruct implicit dependencies from event narrative.",
+      "cascade_expression": "narrative (complete event timeline with impact)"
+    }
+  },
+  "neo4j_constraints": {
+    "unique_constraints": [
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (b:Bus) REQUIRE b.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (p:Pump) REQUIRE p.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (g:Generator) REQUIRE g.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (n:Node_Junction) REQUIRE n.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (br:Branch) REQUIRE br.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (pl:Pipe_Link) REQUIRE pl.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (t:Tank) REQUIRE t.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (cn:CyberNode) REQUIRE cn.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (ht:HazardType) REQUIRE ht.name IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (sc:SCADA) REQUIRE sc.id IS UNIQUE",
+      "CREATE CONSTRAINT IF NOT EXISTS FOR (bp:BackupPower) REQUIRE bp.id IS UNIQUE"
+    ],
+    "relationship_constraints": {
+      "POWERED_BY": "ONLY from Pump to Bus",
+      "CASCADES_TO": "ONLY between physical layer entities (Bus, Pump, Generator, Node_Junction)",
+      "TRIGGERS": "ONLY from HazardType to physical layer entities",
+      "CONTROLS": "ONLY from SCADA/CyberNode to physical layer entities",
+      "MONITORS": "ONLY from SCADA/CyberNode to physical layer entities",
+      "CONNECTS_TO": "ONLY between same-layer entities",
+      "HAS_BACKUP": "ONLY from Pump/Bus to BackupPower"
+    }
+  },
+  "core_cascade_paths": {
+    "canonical_path": "HazardType -[:TRIGGERS]-> Bus -[:CASCADES_TO]-> Pump -[:CASCADES_TO]-> Node_Junction",
+    "power_to_water": "Bus fault → Pump POWERED_BY loss → Node_Junction pressure drop",
+    "full_chain_with_cyber": "HazardType -[:TRIGGERS]-> SCADA -[:CONTROLS]-> Bus -[:CASCADES_TO]-> Pump -[:CASCADES_TO]-> Node_Junction",
+    "resilience_intervention": "Pump -[:HAS_BACKUP]-> BackupPower (prevents POWERED_BY loss)",
+    "amplification_loop": "Bus -[:AMPLIFIES]-> Pump -[:AMPLIFIES]-> Bus (positive feedback)",
+    "neo4j_query_example": "MATCH path=(h:HazardType)-[:TRIGGERS]->(b:Bus)-[:CASCADES_TO*1..3]->(n:Node_Junction) RETURN path"
+  },
+  "v1_to_v2_changes": {
+    "deleted_entities": [
+      "coordinates (C6: no material can extract)",
+      "ip_address (C6: no material can extract)",
+      "firmware_version (C6: no material can extract)",
+      "PLC/RTU/PMU/Sensor/Actuator (C3: merged into CyberNode with type attribute)",
+      "FiberLink/WirelessLink (C3: merged into CyberEdge or CONNECTS_TO)"
+    ],
+    "added_entities": [
+      "BackupPower (M3/M4 unique, resilience key)",
+      "SCADA (promoted from mention to entity, 4 materials)",
+      "WaterSystem (M4/M5 system-level entity)",
+      "NaturalGasFacility (M2/M5 extended infrastructure)",
+      "ResponseLevel (M4 emergency response)"
+    ],
+    "promoted_relations": [
+      "CONTROLS: keep→required (4 materials after M3 SCADA requirement added)",
+      "CASCADES_TO: keep→required (4 materials confirmed)"
+    ],
+    "key_principle_change": "v1.0 was top-down (prior knowledge), v2.0 is bottom-up (material evidence). Only entities/relations/attributes that can be extracted from >=1 material type are retained."
+  },
+  "statistics": {
+    "entities": {
+      "total": 18,
+      "required": 5,
+      "keep": 9,
+      "optional": 4
+    },
+    "relations": {
+      "total": 12,
+      "required": 2,
+      "keep": 4,
+      "keep_single_high": 2,
+      "optional": 4
+    },
+    "attributes": {
+      "total": 39,
+      "required": 3,
+      "keep": 5,
+      "keep_moderate": 8,
+      "keep_single_high": 11,
+      "optional": 12
+    },
+    "layers": {
+      "power": [
+        "Bus",
+        "Branch",
+        "Generator"
+      ],
+      "water": [
+        "Pump",
+        "Node_Junction",
+        "Pipe_Link",
+        "Tank",
+        "Valve"
+      ],
+      "cyber": [
+        "SCADA",
+        "CyberNode",
+        "CyberEdge"
+      ],
+      "hazard": [
+        "HazardType"
+      ],
+      "resilience": [
+        "BackupPower"
+      ],
+      "system": [
+        "WaterSystem",
+        "NaturalGasFacility",
+        "ResponseLevel"
+      ]
+    },
+    "cross_layer_relations": [
+      "POWERED_BY",
+      "CASCADES_TO",
+      "TRIGGERS",
+      "DEPENDS_ON",
+      "AMPLIFIES"
+    ],
+    "cyber_physical_relations": [
+      "CONTROLS",
+      "MONITORS"
+    ]
+  }
+}

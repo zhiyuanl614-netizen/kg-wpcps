@@ -1,0 +1,12 @@
+{
+  "paper_id": "P002",
+  "title": "Joint cascade vulnerability assessment of interdependent power-water infrastructures",
+  "authors": ["Shao et al."],
+  "year": 2023,
+  "venue": "IEEE PES General Meeting",
+  "doi": "10.1109/PESGM.2023.10261437",
+  "abstract": "This paper proposes a joint cascade vulnerability assessment method for interdependent power-water infrastructures considering cyber-physical attacks. The power grid is modeled using MATLAB MATPOWER with IEEE 14-bus test system. The water network is modeled using EPANET with a modified Net3 network. The coupling relationship is defined as: Pump-1 powered by Bus-2 (110kV), Pump-2 powered by Bus-5 (110kV), Pump-3 powered by Bus-9 (35kV). The SCADA system monitors Bus voltage and frequency via RTU devices, and controls breaker states. Cyber attacks can compromise SCADA to send false control commands, causing breaker trips. The cascading failure process: (1) cyber attack compromises SCADA; (2) SCADA sends false trip command to Bus-5 breaker; (3) Bus-5 loses load, power flow redistributes; (4) Pump-2 loses power, water pressure at downstream nodes drops; (5) if pressure < 14m, junction considered failed. The vulnerability assessment identifies the most critical node combinations that maximize overall damage. Results show that targeting Bus-5 (which powers Pump-2 serving the largest demand zone) causes the highest combined damage to both systems. The study uses load_shedding_pct and pressure_satisfaction_pct as system performance metrics.",
+  "test_systems": ["IEEE 14-bus", "Net3 (EPANET modified)"],
+  "simulation_models": ["MATPOWER (AC power flow)", "EPANET"],
+  "method_type": "vulnerability_assessment"
+}

@@ -1,0 +1,271 @@
+{
+  "step": "5a",
+  "title": "Merged Entity Frequency → v2.0 Entity Set",
+  "date": "2026-09-06",
+  "method": "Station-level entities mapped to node-level canonical names; total_materials = number of material types (M1-M5) with pct>0",
+  "mapping_rules": {
+    "Substation → Bus": "M2/M3/M4/M5 station-level maps to M1 node-level",
+    "PumpStation → Pump": "M2/M3/M4/M5 station-level maps to M1 node-level",
+    "PowerPlant → Generator": "M2/M3/M5 station-level maps to M1 node-level",
+    "WaterTreatmentPlant → Node_Junction": "M2/M3/M4 station-level maps to M1 node-level",
+    "Pipeline → Pipe_Link": "M3 station-level maps to M1 node-level",
+    "TransmissionLine → Branch": "M3 station-level maps to M1 node-level",
+    "CyberDevice/Sensor → CyberNode": "M2/M3 device-level maps to M1 node-level",
+    "SCADA_mention/SCADA_requirement → SCADA": "All SCADA mentions unified"
+  },
+  "decision_rules": {
+    "required": "appears in >=4 material types (out of M1-M5)",
+    "keep": "appears in 2-3 material types",
+    "keep_single_high": "appears in 1 material type but pct>=50%",
+    "optional": "appears in 1 material type with pct<50%"
+  },
+  "entities": {
+    "Bus": {
+      "total_materials": 5,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 87,
+        "M2": 60,
+        "M3": 40,
+        "M4": 80,
+        "M5": 80
+      },
+      "v2_decision": "required"
+    },
+    "Pump": {
+      "total_materials": 5,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 60,
+        "M2": 80,
+        "M3": 60,
+        "M4": 100,
+        "M5": 40
+      },
+      "v2_decision": "required"
+    },
+    "Generator": {
+      "total_materials": 4,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 67,
+        "M2": 60,
+        "M3": 40,
+        "M5": 60
+      },
+      "v2_decision": "required"
+    },
+    "SCADA": {
+      "total_materials": 4,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 33,
+        "M2": 60,
+        "M3": 60,
+        "M5": 20
+      },
+      "v2_decision": "required"
+    },
+    "HazardType": {
+      "total_materials": 4,
+      "appeared_in": [
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 80,
+        "M3": 40,
+        "M4": 80,
+        "M5": 100
+      },
+      "v2_decision": "required"
+    },
+    "Node_Junction": {
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 53,
+        "M2": 60,
+        "M3": 20
+      },
+      "v2_decision": "keep"
+    },
+    "CyberNode": {
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 40,
+        "M2": 20,
+        "M3": 20
+      },
+      "v2_decision": "keep"
+    },
+    "Branch": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 73,
+        "M3": 20
+      },
+      "v2_decision": "keep"
+    },
+    "Pipe_Link": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 47,
+        "M3": 40
+      },
+      "v2_decision": "keep"
+    },
+    "Tank": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 47,
+        "M3": 20
+      },
+      "v2_decision": "keep"
+    },
+    "Valve": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 7,
+        "M3": 20
+      },
+      "v2_decision": "keep"
+    },
+    "NaturalGasFacility": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M2",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M2": 20,
+        "M5": 20
+      },
+      "v2_decision": "keep"
+    },
+    "BackupPower": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M3",
+        "M4"
+      ],
+      "best_pct_per_material": {
+        "M3": 40,
+        "M4": 80
+      },
+      "v2_decision": "keep"
+    },
+    "WaterSystem": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M4": 60,
+        "M5": 80
+      },
+      "v2_decision": "keep"
+    },
+    "CyberEdge": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 27
+      },
+      "v2_decision": "optional"
+    },
+    "Reservoir": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 20
+      },
+      "v2_decision": "optional"
+    },
+    "DMA_District": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 20
+      },
+      "v2_decision": "optional"
+    },
+    "ResponseLevel": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M4"
+      ],
+      "best_pct_per_material": {
+        "M4": 40
+      },
+      "v2_decision": "optional"
+    }
+  },
+  "summary": {
+    "total_unique_entities": 18,
+    "by_decision": {
+      "required": 5,
+      "keep": 9,
+      "optional": 4
+    },
+    "v2_core_entities": 14,
+    "v2_extended_entities": 0,
+    "v2_optional_entities": 4
+  }
+}

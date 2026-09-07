@@ -1,0 +1,12 @@
+{
+  "paper_id": "P001",
+  "title": "Cascading failure analysis of interdependent water-power networks based on functional coupling",
+  "authors": ["Zhang et al."],
+  "year": 2025,
+  "venue": "Reliability Engineering & System Safety",
+  "doi": "10.1016/j.ress.2025.110823",
+  "abstract": "This paper proposes a cascading failure analysis method for interdependent water-power networks (IWPN) based on functional coupling. First, we define the functional coupling relationships between the IWPN and establish a functional coupling model. The power network is modeled using DC power flow with IEEE 118-bus test system. The water network uses EPANET with a city water supply network (Net3). The core coupling is POWERED_BY: each Pump in the water network is powered by a specific Bus in the power network. When a Bus fails (load shedding or islanding), all Pumps powered by that Bus lose power and shut down, causing pressure drops at downstream Node_Junctions. The cascading failure simulation proceeds in steps: (1) initial disturbance triggers Bus fault; (2) power flow redistribution causes overload on Branches; (3) overloaded Branches trip, causing further Bus failures; (4) Pump stations lose power, water pressure drops; (5) if pressure at Node_Junction falls below threshold (0.15 MPa), the node is considered failed. Key findings: (a) coupling strength significantly affects cascade depth - stronger coupling leads to faster cascade propagation; (b) about 3.69% of initial failure scenarios lead to 'perfect storms' causing large-scale cross-system cascading; (c) BackupPower (diesel generators) at critical Pump stations can reduce cascade impact by 40-60%. The resilience index R = integral of system performance Q(t) over recovery period, ranging from 0 to 1.",
+  "test_systems": ["IEEE 118-bus", "Net3 (EPANET)"],
+  "simulation_models": ["DC_power_flow", "EPANET"],
+  "method_type": "simulation"
+}

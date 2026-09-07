@@ -1,0 +1,424 @@
+{
+  "step": "4a",
+  "title": "Emergency Plans (M4) Extractable Entities and Relations",
+  "date": "2026-08-31",
+  "sampled_plans": 5,
+  "plans": [
+    {
+      "id": "EP1",
+      "title": "国家大面积停电事件应急预案",
+      "year": 2015,
+      "level": "national",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [
+            "voltage_level_kV"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "backup_power_type",
+            "backup_duration_h"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "natural_disaster_equipment_failure_cyber_attack"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "ResponseLevel",
+          "granularity": "L1-system",
+          "attributes": [
+            "level_I_II_III_IV",
+            "load_recovery_target_80pct"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "CASCADES_TO",
+          "from": "PowerOutage",
+          "to": "WaterSupplyDisruption",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        },
+        {
+          "relation": "REQUIRES",
+          "from": "PumpStation",
+          "to": "BackupPower",
+          "explicitness": "R1-qualitative-requirement",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "response_measures": [
+          "emergency_water_supply_measures",
+          "load_recovery_80pct_target",
+          "important_users_priority"
+        ],
+        "organizational": [
+          "command_structure",
+          "department_responsibilities"
+        ]
+      },
+      "cannot_extract": [
+        "network_topology",
+        "simulation_model",
+        "named_facilities",
+        "cascade_mechanism_detail"
+      ]
+    },
+    {
+      "id": "EP2",
+      "title": "深圳市罗湖区城市供排水突发事件应急预案(2023修订)",
+      "year": 2023,
+      "level": "district",
+      "extractable_entities": [
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station-NAMED",
+          "attributes": [
+            "backup_power_type"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station-NAMED",
+          "attributes": [],
+          "frequency": "high"
+        },
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [
+            "voltage_level_10kV"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "power_outage_pipe_burst_water_quality"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "CASCADES_TO",
+          "from": "SubstationOutage",
+          "to": "WaterPlantShutdown",
+          "explicitness": "R2-named",
+          "frequency": "high"
+        },
+        {
+          "relation": "POWER_SUPPLIES",
+          "from": "Substation",
+          "to": "PumpStation",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "cascade_chain": "substation_power_failure -> water_plant_shutdown -> emergency_water_supply",
+        "response_measures": [
+          "backup_generator_activation",
+          "alternative_water_source",
+          "public_notification"
+        ]
+      },
+      "cannot_extract": [
+        "simulation_model",
+        "network_parameters",
+        "cascade_probability"
+      ]
+    },
+    {
+      "id": "EP3",
+      "title": "永德县城市供水突发事件应急预案",
+      "year": 2023,
+      "level": "county",
+      "extractable_entities": [
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station-NAMED",
+          "attributes": [
+            "backup_power_type_diesel_generator",
+            "backup_duration_8h",
+            "seismic_fortification_VII"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station-NAMED",
+          "attributes": [
+            "dual_power_supply"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [
+            "primary_power_source",
+            "backup_power_source"
+          ],
+          "frequency": "medium"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "POWER_SUPPLIES",
+          "from": "Substation",
+          "to": "PumpStation",
+          "explicitness": "R2-named",
+          "frequency": "high"
+        },
+        {
+          "relation": "DEPENDS_ON",
+          "from": "PumpStation",
+          "to": "Substation",
+          "explicitness": "R2-named",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "backup_power_detail": "diesel_generator_2_units_backup_8h",
+        "seismic_fortification": "VII_degree",
+        "power_supply_mode": "dual_feed_primary_city_grid_backup_diesel"
+      },
+      "cannot_extract": [
+        "simulation_model",
+        "cascade_probability",
+        "network_topology"
+      ]
+    },
+    {
+      "id": "EP4",
+      "title": "北京市大面积停电事件应急预案(2022修订)",
+      "year": 2022,
+      "level": "municipal",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "backup_power"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "extreme_weather_earthquake_war_cyber"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "ResponseLevel",
+          "granularity": "L1-system",
+          "attributes": [
+            "level_I_II_III_IV"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "CASCADES_TO",
+          "from": "PowerOutage",
+          "to": "WaterSupplyDisruption",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "response_measures": [
+          "emergency_water_supply",
+          "gas_supply_maintenance",
+          "heating_maintenance"
+        ],
+        "recovery_target": "load_recovery_80pct_priority_areas_90pct"
+      },
+      "cannot_extract": [
+        "named_facilities",
+        "simulation_model",
+        "network_topology"
+      ]
+    },
+    {
+      "id": "EP5",
+      "title": "广州市大面积停电事件应急预案",
+      "year": 2021,
+      "level": "municipal",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "backup_power"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "CASCADES_TO",
+          "from": "PowerOutage",
+          "to": "WaterSupplyDisruption",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "response_measures": [
+          "water_gas_supply_guarantee",
+          "emergency_water_measures"
+        ]
+      },
+      "cannot_extract": [
+        "named_facilities",
+        "simulation_model",
+        "cascade_mechanism"
+      ]
+    }
+  ],
+  "summary": {
+    "entity_frequency": {
+      "PumpStation_NAMED": {
+        "count": 5,
+        "pct": 100,
+        "granularity": "L2-station-NAMED",
+        "note": "plans often name specific stations"
+      },
+      "HazardType": {
+        "count": 4,
+        "pct": 80,
+        "granularity": "L1-system"
+      },
+      "Substation": {
+        "count": 4,
+        "pct": 80,
+        "granularity": "L2-station"
+      },
+      "WaterTreatmentPlant_NAMED": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L2-station-NAMED"
+      },
+      "ResponseLevel": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L1-system"
+      }
+    },
+    "relation_frequency": {
+      "CASCADES_TO_PowerOutage_to_WaterDisruption": {
+        "count": 4,
+        "pct": 80,
+        "explicitness": "R1-qualitative"
+      },
+      "POWER_SUPPLIES_Substation_to_PumpStation": {
+        "count": 2,
+        "pct": 40,
+        "explicitness": "R2-named"
+      },
+      "DEPENDS_ON_PumpStation_to_Substation": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R2-named"
+      },
+      "REQUIRES_PumpStation_to_BackupPower": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R1-requirement"
+      }
+    },
+    "attribute_frequency": {
+      "backup_power_type": {
+        "count": 4,
+        "pct": 80,
+        "precision": "A2-semi-quantitative"
+      },
+      "backup_power_duration_h": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A2-semi-quantitative"
+      },
+      "response_level": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A2-semi-quantitative"
+      },
+      "recovery_target": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A2-semi-quantitative"
+      },
+      "seismic_fortification": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2-semi-quantitative"
+      },
+      "dual_power_supply": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A1-qualitative"
+      }
+    },
+    "key_findings": {
+      "entity_granularity": "Plans use L2-station-NAMED level - uniquely provide specific facility names",
+      "relation_explicitness": "Plans provide R2-named mapping (specific station A supplies specific station B), unique among all materials",
+      "cascade_description": "Plans describe cascade as R1-qualitative causal chain with specific response measures",
+      "unique_contribution_1": "Plans provide NAMED facilities and their interdependency - the only material type with concrete station-to-station mapping",
+      "unique_contribution_2": "Plans specify backup power details (type, duration) that papers treat as binary",
+      "unique_contribution_3": "Plans define response levels and recovery targets (load recovery 80%+)",
+      "unique_contribution_4": "Plans describe emergency measures (alternative water source, public notification) not found elsewhere"
+    }
+  }
+}

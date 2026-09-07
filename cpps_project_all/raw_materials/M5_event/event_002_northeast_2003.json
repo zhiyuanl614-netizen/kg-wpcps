@@ -1,0 +1,16 @@
+{
+  "event_id": "E002",
+  "title": "2003 Northeast Blackout (US/Canada)",
+  "year": 2003,
+  "date": "2003-08-14",
+  "location": "Northeastern US and Ontario, Canada",
+  "event_type": "equipment_failure",
+  "description": "On August 14, 2003, the largest blackout in North American history affected 55 million people across 8 US states and Ontario, Canada. The root cause was a software bug in the alarm system at FirstEnergy's control room in Ohio, which failed to alert operators to transmission line overloads. A tree branch contacted a 345kV transmission line (Branch-Harding-Star) causing it to trip. Due to the failed alarm system, operators did not redistribute load. Overloaded lines cascaded: Branch-Harding-Star tripped → Branch-Sammis-Star overloaded and tripped → cascade of 256 power plants and 531 Branch failures. At 16:10 EDT, the cascade reached New York, Cleveland, Detroit, and Toronto. In Cleveland, all 4 major water Pump stations lost power, causing complete water service failure for 1.5 million residents. Boil water notices were issued for 5 days after power restoration due to potential contamination from low pressure. In Detroit, water pressure dropped to below 10 psi, below the 20 psi minimum for fire protection. The water system relied on Tank reserves which depleted within 4-6 hours. Backup generators at some Pump stations provided limited service. Full water service restoration took 2-5 days after power was restored. This event demonstrated the critical dependency of water systems on electric power (Pump POWERED_BY Bus) and the vulnerability of SCADA alarm systems.",
+  "impact": {
+    "population_affected": 55000000,
+    "MW_lost": 62000,
+    "recovery_time_hours": 48,
+    "power_plants_tripped": 256,
+    "water_impact": "Cleveland complete water failure, Detroit low pressure, boil notices for 5 days"
+  }
+}

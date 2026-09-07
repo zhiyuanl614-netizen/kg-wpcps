@@ -1,0 +1,537 @@
+{
+  "step": "3a",
+  "title": "Technical Reports (M2) Extractable Entities and Relations",
+  "date": "2026-08-31",
+  "sampled_reports": 5,
+  "reports": [
+    {
+      "id": "R1",
+      "title": "PNNL Integrated Water Power Resilience Project",
+      "year": "2020-ongoing",
+      "source": "pnnl.gov",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [
+            "voltage_level_kV"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "pump_power_kW",
+            "backup_power_type"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station",
+          "attributes": [
+            "capacity_m3d"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "PowerPlant",
+          "granularity": "L2-station",
+          "attributes": [
+            "type_thermal_hydro_nuclear"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "SCADA",
+          "granularity": "L1-system-mention",
+          "attributes": [],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "hazard_category_natural_cyber"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "DEPENDS_ON",
+          "from": "PumpStation",
+          "to": "Substation",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        },
+        {
+          "relation": "DEPENDS_ON",
+          "from": "WaterTreatmentPlant",
+          "to": "PowerPlant",
+          "explicitness": "R1-qualitative",
+          "frequency": "medium"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "PowerSystem",
+          "to": "WaterSystem",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "system_level": [
+          "interdependency_type_physical_cyber_geographic",
+          "resilience_gap_identified"
+        ],
+        "statistical": [
+          "water_related_energy_pct_national_4pct",
+          "energy_for_water_pct_municipal_30_40pct"
+        ]
+      },
+      "cannot_extract": [
+        "network_topology",
+        "simulation_parameters",
+        "named_station_mapping",
+        "cascade_simulation_results"
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "DOE Water-Energy Nexus: Challenges and Opportunities",
+      "year": "2014",
+      "source": "energy.gov",
+      "extractable_entities": [
+        {
+          "entity": "PowerPlant",
+          "granularity": "L2-station",
+          "attributes": [
+            "type_thermal_hydro_nuclear",
+            "cooling_water_type"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station",
+          "attributes": [
+            "energy_intensity_kWh_m3"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "drought_flood_scarcity"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "DEPENDS_ON",
+          "from": "PowerPlant",
+          "to": "WaterResource",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        },
+        {
+          "relation": "DEPENDS_ON",
+          "from": "WaterSystem",
+          "to": "PowerSystem",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "statistical": [
+          "energy_sector_freshwater_withdrawal_40pct",
+          "water_related_energy_4pct_national_electricity",
+          "thermoelectric_cooling_water_dominant_use"
+        ],
+        "policy": [
+          "six_strategic_pillars",
+          "research_needs_metrics_data_modeling"
+        ]
+      },
+      "cannot_extract": [
+        "network_topology",
+        "named_facilities",
+        "cascade_simulation",
+        "cyber_layer"
+      ]
+    },
+    {
+      "id": "R3",
+      "title": "FERC/NERC February 2021 Freeze Final Report",
+      "year": "2021",
+      "source": "ferc.gov",
+      "extractable_entities": [
+        {
+          "entity": "Generator",
+          "granularity": "L2-station",
+          "attributes": [
+            "fuel_type_natural_gas_coal_wind",
+            "outage_cause_freezing_fuel_mechanical"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "NaturalGasFacility",
+          "granularity": "L2-station",
+          "attributes": [
+            "production_loss_pct_40pct"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterSystem",
+          "granularity": "L1-system",
+          "attributes": [
+            "service_disruption_boil_water_notices"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "extreme_cold_ice_storm"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "CASCADES_TO",
+          "from": "NaturalGasFacility",
+          "to": "Generator",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "Generator",
+          "to": "WaterSystem",
+          "explicitness": "R0-implicit",
+          "frequency": "medium"
+        },
+        {
+          "relation": "TRIGGERS",
+          "from": "ExtremeCold",
+          "to": "Generator",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "statistical": [
+          "generation_loss_61800_MW",
+          "generating_unit_outages_1045_units_4124_outages",
+          "natural_gas_units_58pct_of_unplanned_outages",
+          "freeze_related_81pct_above_stated_design_temp"
+        ],
+        "recommendations": [
+          "28_formal_recommendations",
+          "mandatory_winterization_standards"
+        ]
+      },
+      "cannot_extract": [
+        "water_network_topology",
+        "pump_station_details",
+        "cyber_layer",
+        "simulation_model"
+      ]
+    },
+    {
+      "id": "R4",
+      "title": "PNNL Hydropower Cyber-Physical Configurations",
+      "year": "2021",
+      "source": "pnnl.gov (PNNL-31483)",
+      "extractable_entities": [
+        {
+          "entity": "HydropowerPlant",
+          "granularity": "L2-station",
+          "attributes": [
+            "type_run_of_river_storage_pumped",
+            "river_cascade_position"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "CyberDevice",
+          "granularity": "L3-device",
+          "attributes": [
+            "device_type_SCADA_PLC_HMI",
+            "communication_protocol"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "CommLink",
+          "granularity": "L3-device",
+          "attributes": [
+            "link_type_fiber_radio_ethernet"
+          ],
+          "frequency": "medium"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "CONTROLS",
+          "from": "CyberDevice",
+          "to": "HydropowerPlant",
+          "explicitness": "R1-qualitative",
+          "frequency": "medium"
+        },
+        {
+          "relation": "MONITORS",
+          "from": "CyberDevice",
+          "to": "HydropowerPlant",
+          "explicitness": "R1-qualitative",
+          "frequency": "medium"
+        }
+      ],
+      "extractable_attributes": {
+        "cyber_physical_typology": [
+          "limited_set_of_cyber_physical_configurations",
+          "control_architecture_type"
+        ],
+        "physical": [
+          "dam_type",
+          "turbine_type",
+          "generation_capacity_MW"
+        ]
+      },
+      "cannot_extract": [
+        "network_topology_beyond_single_plant",
+        "cascade_simulation",
+        "detailed_comm_protocol_specs"
+      ]
+    },
+    {
+      "id": "R5",
+      "title": "Resilience of Interdependent Water and Power Systems (PNNL literature review)",
+      "year": "2021",
+      "source": "MDPI Water (PNNL affiliated)",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "high"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "backup_power_type"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "SCADA",
+          "granularity": "L1-mention",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "climate_change_dominant_topic"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "DEPENDS_ON",
+          "from": "PumpStation",
+          "to": "Substation",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "PowerSystem",
+          "to": "WaterSystem",
+          "explicitness": "R1-qualitative",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "modeling_approaches": [
+          "optimization_simulation",
+          "agent_based",
+          "network_based",
+          "input_output"
+        ],
+        "resilience_metrics": [
+          "robustness_redundancy_resourcefulness_rapidity"
+        ],
+        "research_gaps": [
+          "limited_joint_modeling",
+          "lack_of_empirical_data",
+          "cyber_layer_simplification"
+        ]
+      },
+      "cannot_extract": [
+        "specific_network_parameters",
+        "named_facility_mapping",
+        "simulation_results"
+      ]
+    }
+  ],
+  "summary": {
+    "entity_frequency": {
+      "Substation": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L2-station"
+      },
+      "PumpStation": {
+        "count": 4,
+        "pct": 80,
+        "granularity": "L2-station"
+      },
+      "WaterTreatmentPlant": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L2-station"
+      },
+      "PowerPlant": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L2-station"
+      },
+      "Generator": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station"
+      },
+      "SCADA_mention": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L1-mention"
+      },
+      "CyberDevice": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L3-device"
+      },
+      "HazardType": {
+        "count": 4,
+        "pct": 80,
+        "granularity": "L1-system"
+      },
+      "NaturalGasFacility": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station"
+      }
+    },
+    "relation_frequency": {
+      "DEPENDS_ON_PumpStation_to_Substation": {
+        "count": 3,
+        "pct": 60,
+        "explicitness": "R1-qualitative"
+      },
+      "DEPENDS_ON_WaterSystem_to_PowerSystem": {
+        "count": 2,
+        "pct": 40,
+        "explicitness": "R1-qualitative"
+      },
+      "CASCADES_TO_Power_to_Water": {
+        "count": 3,
+        "pct": 60,
+        "explicitness": "R1-qualitative"
+      },
+      "CASCADES_TO_Gas_to_Power": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R1-qualitative"
+      },
+      "TRIGGERS_Hazard_to_Facility": {
+        "count": 2,
+        "pct": 40,
+        "explicitness": "R1-qualitative"
+      },
+      "CONTROLS_Cyber_to_Physical": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R1-qualitative"
+      }
+    },
+    "attribute_frequency": {
+      "voltage_level_kV": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2"
+      },
+      "pump_power_kW": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2"
+      },
+      "backup_power_type": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A1"
+      },
+      "capacity_m3d": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2"
+      },
+      "power_plant_type": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A1"
+      },
+      "hazard_category": {
+        "count": 4,
+        "pct": 80,
+        "precision": "A1"
+      },
+      "statistical_data": {
+        "count": 3,
+        "pct": 60,
+        "precision": "A2"
+      },
+      "resilience_metrics": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2"
+      },
+      "research_gaps": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A1"
+      }
+    },
+    "key_findings": {
+      "entity_granularity": "Reports use L2-station level (Substation, PumpStation, WTP), NOT L4-node level (Bus, Node)",
+      "relation_explicitness": "Reports use R1-qualitative (natural language), NOT R2-named or R3-formula",
+      "attribute_precision": "Reports use A1-qualitative to A2-semi-quantitative, NOT A4-simulation",
+      "unique_contribution": "Reports provide system-level statistics, policy recommendations, and research gap identification that papers do not",
+      "cascade_description": "Reports describe cascading as narrative causal chains, not mathematical models",
+      "cyber_layer": "Reports mention SCADA but do not model it; only R4 (Hydropower CPS) provides device-level detail"
+    }
+  }
+}

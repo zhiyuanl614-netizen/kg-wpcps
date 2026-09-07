@@ -1,0 +1,179 @@
+{
+  "entities": [
+    {
+      "id": "Bus_ERCOT_Grid",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "ERCOT电网",
+      "attributes": {
+        "voltage_level_kV": 345
+      }
+    },
+    {
+      "id": "Gen_NaturalGas",
+      "type": "Generator",
+      "layer": "power",
+      "name_zh": "天然气发电机组",
+      "attributes": {
+        "power_plant_type": "thermal"
+      }
+    },
+    {
+      "id": "Pump_Austin_Ullrich",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "Austin Ullrich水厂泵站",
+      "attributes": {
+        "pump_power": 800
+      }
+    },
+    {
+      "id": "Pump_Houston",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "Houston泵站",
+      "attributes": {}
+    },
+    {
+      "id": "HazardType_ice_disaster",
+      "type": "HazardType",
+      "layer": "hazard",
+      "name_zh": "冰灾",
+      "attributes": {
+        "hazard_category": "natural"
+      }
+    },
+    {
+      "id": "BP_Austin_DG",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "Austin备用柴油发电机",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 8
+      }
+    },
+    {
+      "id": "NaturalGasFacility_TX",
+      "type": "NaturalGasFacility",
+      "layer": "system",
+      "name_zh": "德州天然气设施",
+      "attributes": {}
+    }
+  ],
+  "relations": [
+    {
+      "source": "HazardType_ice_disaster",
+      "target": "NaturalGasFacility_TX",
+      "type": "TRIGGERS",
+      "explicitness": "R1-narrative",
+      "evidence": "Extreme cold froze natural gas wellheads"
+    },
+    {
+      "source": "HazardType_ice_disaster",
+      "target": "Bus_ERCOT_Grid",
+      "type": "TRIGGERS",
+      "explicitness": "R1-narrative",
+      "evidence": "Ice on transmission lines caused outages"
+    },
+    {
+      "source": "NaturalGasFacility_TX",
+      "target": "Gen_NaturalGas",
+      "type": "CASCADES_TO",
+      "explicitness": "R1-narrative",
+      "evidence": "Gas supply reduction caused generator failures"
+    },
+    {
+      "source": "Bus_ERCOT_Grid",
+      "target": "Pump_Austin_Ullrich",
+      "type": "CASCADES_TO",
+      "explicitness": "R1-narrative",
+      "evidence": "Power outage caused pump station failure"
+    },
+    {
+      "source": "Bus_ERCOT_Grid",
+      "target": "Pump_Houston",
+      "type": "CASCADES_TO",
+      "explicitness": "R1-narrative",
+      "evidence": "Power outage caused Houston pump failure"
+    },
+    {
+      "source": "Pump_Austin_Ullrich",
+      "target": "BP_Austin_DG",
+      "type": "HAS_BACKUP",
+      "explicitness": "R1-narrative",
+      "evidence": "Ullrich plant had backup generators that failed after 8 hours"
+    }
+  ],
+  "event_timeline": [
+    {
+      "time": "2021-02-15 02:00",
+      "event": "48.6% generation capacity offline",
+      "affected_entities": [
+        "Gen_NaturalGas"
+      ]
+    },
+    {
+      "time": "2021-02-15 06:00",
+      "event": "4.5M households without power",
+      "affected_entities": [
+        "Bus_ERCOT_Grid"
+      ]
+    },
+    {
+      "time": "2021-02-15 12:00",
+      "event": "Pump stations stopped, water pressure dropped",
+      "affected_entities": [
+        "Pump_Austin_Ullrich",
+        "Pump_Houston"
+      ]
+    },
+    {
+      "time": "2021-02-16 00:00",
+      "event": "1100+ boil water notices issued",
+      "affected_entities": []
+    },
+    {
+      "time": "2021-02-20",
+      "event": "Partial restoration began",
+      "affected_entities": []
+    }
+  ],
+  "cascade_chains": [
+    {
+      "chain": [
+        "冰灾",
+        "天然气井口冻结",
+        "发电机组停运",
+        "电网大面积停电",
+        "泵站断电",
+        "水压下降",
+        "管道冻裂",
+        "供水中断"
+      ],
+      "relation_type": "CASCADES_TO",
+      "expression": "narrative",
+      "amplifies": true,
+      "description": "冰灾→天然气供应中断→发电停运→电网崩溃→泵站断电→水压下降→管道冻裂→供水中断（正反馈放大）"
+    }
+  ],
+  "amplification_loops": [
+    {
+      "loop": [
+        "停电→泵停→管道冻裂→漏水→水压进一步下降→更多管道故障"
+      ],
+      "description": "正反馈放大：停电导致泵停，管道因无流动水而冻裂，漏水导致水压进一步下降"
+    }
+  ],
+  "impact_statistics": {
+    "impact_population": 10000000,
+    "MW_lost": 34000,
+    "recovery_time": 336
+  },
+  "metadata": {
+    "event_id": "E003",
+    "extraction_date": "2026-09-06",
+    "ontology_version": "2.0",
+    "material_type": "M5_event"
+  }
+}
