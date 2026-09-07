@@ -1,0 +1,112 @@
+{
+  "step": "4c",
+  "title": "Merged Plan+Event Extractable Analysis",
+  "date": "2026-08-31",
+  "entity_plan_vs_event": {
+    "PumpStation": {
+      "plan": 100,
+      "event": 40,
+      "named_in_plan": true
+    },
+    "HazardType": {
+      "plan": 80,
+      "event": 100,
+      "named_in_plan": false
+    },
+    "Substation": {
+      "plan": 80,
+      "event": 80,
+      "named_in_plan": false
+    },
+    "WaterSystem": {
+      "plan": 60,
+      "event": 80,
+      "named_in_plan": false
+    },
+    "Generator": {
+      "plan": 0,
+      "event": 60,
+      "named_in_plan": false
+    },
+    "SCADA": {
+      "plan": 0,
+      "event": 20,
+      "named_in_event": true
+    },
+    "NaturalGasFacility": {
+      "plan": 0,
+      "event": 20,
+      "named_in_plan": false
+    },
+    "ResponseLevel": {
+      "plan": 40,
+      "event": 0,
+      "named_in_plan": false
+    }
+  },
+  "relation_plan_vs_event": {
+    "CASCADES_TO_power_to_water": {
+      "plan": 80,
+      "event": 100
+    },
+    "TRIGGERS_hazard_to_component": {
+      "plan": 0,
+      "event": 100
+    },
+    "POWER_SUPPLIES_substation_to_pump": {
+      "plan": 40,
+      "event": 0
+    },
+    "AMPLIFIES_feedback_loop": {
+      "plan": 0,
+      "event": 20
+    },
+    "CONTROLS_SCADA_to_substation": {
+      "plan": 0,
+      "event": 20
+    }
+  },
+  "attribute_plan_vs_event": {
+    "backup_power_type": {
+      "plan": 80,
+      "event": 0
+    },
+    "backup_duration_h": {
+      "plan": 40,
+      "event": 0
+    },
+    "timeline": {
+      "plan": 0,
+      "event": 100
+    },
+    "impact_population": {
+      "plan": 0,
+      "event": 100
+    },
+    "recovery_time": {
+      "plan": 0,
+      "event": 100
+    },
+    "cascade_chain_narrative": {
+      "plan": 40,
+      "event": 100
+    },
+    "response_level": {
+      "plan": 40,
+      "event": 0
+    },
+    "MW_lost": {
+      "plan": 0,
+      "event": 60
+    }
+  },
+  "ontology_implications": [
+    "I9: Plan provides NAMED facility mapping (station A->station B) - ONLY material with concrete named interdependency",
+    "I10: Event provides COMPLETE cascade chains from trigger to final impact with timeline - ideal for CascadeEvent",
+    "I11: Event reveals AMPLIFIES (positive feedback) relation - not found in any other material",
+    "I12: Event provides cyber attack kill chain (Ukraine) - unique cyber-layer cascade detail",
+    "I13: Plan and Event both use station-level entities - consistent with M2/M3",
+    "I14: Plan backup_power details (type, duration) complement standard requirements",
+    "I15: Event impact statistics (population, MW lost, recovery time) are unique quantitative data"
+  ]
+}

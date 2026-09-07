@@ -1,0 +1,492 @@
+{
+  "step": "4b",
+  "title": "Typical Events (M5) Extractable Entities and Relations",
+  "date": "2026-08-31",
+  "sampled_events": 5,
+  "events": [
+    {
+      "id": "E1",
+      "title": "2003 Northeast Blackout (US/Canada)",
+      "year": 2003,
+      "location": "US Northeast + Ontario",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station-NAMED",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "Generator",
+          "granularity": "L2-station",
+          "attributes": [
+            "256_plants_tripped"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterSystem",
+          "granularity": "L1-system",
+          "attributes": [
+            "55M_people_affected",
+            "boil_water_notices"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "software_bug_alarm_failure"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "TRIGGERS",
+          "from": "SoftwareBug",
+          "to": "AlarmFailure",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "AlarmFailure",
+          "to": "LineOverload",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "LineOverload",
+          "to": "GeneratorTrip",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "GeneratorTrip",
+          "to": "WaterSystemDisruption",
+          "explicitness": "R0-implicit"
+        }
+      ],
+      "extractable_attributes": {
+        "timeline": "Aug14_2003_16:05_cascade_start_to_16:13_complete",
+        "impact": "55M_people_no_power_256_plants_tripped",
+        "recovery_time": "2-4_days",
+        "cascade_chain": "software_bug -> alarm_failure -> line_overload -> 256_generator_trips -> water_disruption"
+      },
+      "cannot_extract": [
+        "simulation_model",
+        "network_parameters",
+        "pump_station_details"
+      ]
+    },
+    {
+      "id": "E2",
+      "title": "2012 India Blackout",
+      "year": 2012,
+      "location": "Northern/Eastern India",
+      "extractable_entities": [
+        {
+          "entity": "TransmissionLine",
+          "granularity": "L2-station",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "Generator",
+          "granularity": "L2-station",
+          "attributes": [
+            "32GW_lost"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterSystem",
+          "granularity": "L1-system",
+          "attributes": [
+            "620M_people_affected"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "transmission_line_fault_grid_overload"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "TRIGGERS",
+          "from": "LineFault",
+          "to": "GridCollapse",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "GridCollapse",
+          "to": "WaterPumpFailure",
+          "explicitness": "R0-implicit"
+        }
+      ],
+      "extractable_attributes": {
+        "timeline": "Jul30_2012_02:35_Northern_grid / Jul31_2012_13:00_Eastern_grid",
+        "impact": "620M_people_32GW_lost_3_regional_grids",
+        "recovery_time": "hours_to_days",
+        "cascade_chain": "line_fault -> grid_overload -> 3_regional_grid_collapse -> water_pump_failure"
+      },
+      "cannot_extract": [
+        "simulation_model",
+        "specific_pump_stations",
+        "cyber_layer"
+      ]
+    },
+    {
+      "id": "E3",
+      "title": "2015 Ukraine Power Grid Cyber Attack",
+      "year": 2015,
+      "location": "Western Ukraine",
+      "extractable_entities": [
+        {
+          "entity": "SCADA",
+          "granularity": "L2-station-NAMED",
+          "attributes": [
+            "BlackEnergy_malware",
+            "remote_access"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [
+            "30_distribution_substations_affected",
+            "breakers_remotely_opened"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "cyber_attack_coordinated"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "TRIGGERS",
+          "from": "CyberAttack",
+          "to": "SCADA_Compromise",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CONTROLS",
+          "from": "SCADA",
+          "to": "Substation",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "SCADA_Compromise",
+          "to": "BreakerOpening",
+          "explicitness": "R2-named"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "BreakerOpening",
+          "to": "PowerOutage",
+          "explicitness": "R1-narrative"
+        }
+      ],
+      "extractable_attributes": {
+        "timeline": "Dec23_2015_15:30_attack_start",
+        "impact": "225K_customers_no_power_3_distribution_companies",
+        "attack_method": "BlackEnergy_malware_spear_phishing_remote_SCADA_access_manual_breaker_opening",
+        "cascade_chain": "spear_phishing -> SCADA_compromise -> remote_breaker_opening -> 225K_power_outage"
+      },
+      "cannot_extract": [
+        "water_system_impact",
+        "simulation_model",
+        "network_parameters"
+      ]
+    },
+    {
+      "id": "E4",
+      "title": "2021 Texas Winter Storm (Uri)",
+      "year": 2021,
+      "location": "Texas USA",
+      "extractable_entities": [
+        {
+          "entity": "Generator",
+          "granularity": "L2-station",
+          "attributes": [
+            "natural_gas_58pct_of_outages",
+            "61.8GW_lost",
+            "1045_units_failed"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "NaturalGasFacility",
+          "granularity": "L2-station",
+          "attributes": [
+            "40pct_production_lost"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "backup_generator_failure_frozen"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterSystem",
+          "granularity": "L1-system",
+          "attributes": [
+            "4.9M_people_no_power",
+            "boil_water_notices_widespread"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "extreme_cold_ice_storm"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "TRIGGERS",
+          "from": "ExtremeCold",
+          "to": "GasFacilityFreeze",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "GasFacilityFreeze",
+          "to": "GeneratorFailure",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "GeneratorFailure",
+          "to": "PumpStationFailure",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "PumpStationFailure",
+          "to": "WaterSystemCollapse",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "AMPLIFIES",
+          "from": "GeneratorFailure",
+          "to": "GasFacilityFreeze",
+          "explicitness": "R1-narrative",
+          "note": "positive_feedback_loop"
+        }
+      ],
+      "extractable_attributes": {
+        "timeline": "Feb10-20_2021_peak_Feb15-18",
+        "impact": "4.9M_power_outage_widespread_water_disruption_boil_notices",
+        "cascade_chain": "extreme_cold -> gas_freeze -> generator_failure -> pump_failure -> water_collapse -> (feedback: power_needed_for_gas)",
+        "positive_feedback": "gas_system_needs_electricity_for_pumping -> power_system_needs_gas_for_generation",
+        "recovery_time": "days_to_weeks"
+      },
+      "cannot_extract": [
+        "simulation_model",
+        "specific_network_parameters"
+      ]
+    },
+    {
+      "id": "E5",
+      "title": "2021 Zhengzhou Flood (7.20)",
+      "year": 2021,
+      "location": "Zhengzhou China",
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "attributes": [
+            "29_HV_lines_failed"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "attributes": [
+            "power_loss_flooding"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterSystem",
+          "granularity": "L1-system",
+          "attributes": [
+            "6M_people_water_disruption"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "attributes": [
+            "extreme_rainfall_201.9mm_per_hour"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "TRIGGERS",
+          "from": "ExtremeRainfall",
+          "to": "SubstationFlooding",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "SubstationFlooding",
+          "to": "PumpStationPowerLoss",
+          "explicitness": "R1-narrative"
+        },
+        {
+          "relation": "CASCADES_TO",
+          "from": "PumpStationPowerLoss",
+          "to": "WaterPressureDrop",
+          "explicitness": "R1-narrative"
+        }
+      ],
+      "extractable_attributes": {
+        "timeline": "Jul20_2021_peak_rainfall_16-17h",
+        "impact": "29_HV_lines_failed_6M_people_water_disruption",
+        "cascade_chain": "extreme_rainfall -> substation_flooding -> pump_power_loss -> water_pressure_drop",
+        "recovery_time": "72h_plus"
+      },
+      "cannot_extract": [
+        "simulation_model",
+        "cyber_layer",
+        "specific_pump_station_names"
+      ]
+    }
+  ],
+  "summary": {
+    "entity_frequency": {
+      "Substation": {
+        "count": 4,
+        "pct": 80,
+        "granularity": "L2-station"
+      },
+      "Generator": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L2-station"
+      },
+      "PumpStation": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L2-station"
+      },
+      "WaterSystem": {
+        "count": 4,
+        "pct": 80,
+        "granularity": "L1-system"
+      },
+      "HazardType": {
+        "count": 5,
+        "pct": 100,
+        "granularity": "L1-system"
+      },
+      "SCADA_NAMED": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station-NAMED"
+      },
+      "NaturalGasFacility": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station"
+      },
+      "TransmissionLine": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station"
+      }
+    },
+    "relation_frequency": {
+      "TRIGGERS_Hazard_to_Component": {
+        "count": 5,
+        "pct": 100,
+        "explicitness": "R1-narrative"
+      },
+      "CASCADES_TO_cross_layer": {
+        "count": 5,
+        "pct": 100,
+        "explicitness": "R1-narrative"
+      },
+      "AMPLIFIES_feedback_loop": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R1-narrative"
+      },
+      "CONTROLS_SCADA_to_Substation": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R1-narrative"
+      }
+    },
+    "attribute_frequency": {
+      "timeline": {
+        "count": 5,
+        "pct": 100,
+        "precision": "T2-T3"
+      },
+      "impact_population": {
+        "count": 5,
+        "pct": 100,
+        "precision": "A2-semi-quantitative"
+      },
+      "recovery_time": {
+        "count": 5,
+        "pct": 100,
+        "precision": "A2-semi-quantitative"
+      },
+      "cascade_chain_narrative": {
+        "count": 5,
+        "pct": 100,
+        "precision": "A1-qualitative"
+      },
+      "MW_lost": {
+        "count": 3,
+        "pct": 60,
+        "precision": "A2-semi-quantitative"
+      },
+      "attack_method_detail": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A1-qualitative"
+      }
+    },
+    "key_findings": {
+      "entity_granularity": "Events use L2-station level, sometimes NAMED (Ukraine SCADA)",
+      "relation_explicitness": "Events use R1-narrative causal chains - the most natural cascade expression",
+      "cascade_description": "Events provide COMPLETE cascade chains from trigger to final impact - unique among all materials",
+      "unique_contribution_1": "Events provide REAL cascade chains with timeline, impact statistics, and recovery time",
+      "unique_contribution_2": "Events reveal positive feedback loops (Texas: gas<->power mutual dependency)",
+      "unique_contribution_3": "Events provide cyber attack kill chain details (Ukraine: phishing->SCADA->breaker)",
+      "unique_contribution_4": "Events quantify impact at population scale (millions affected)",
+      "gap": "Events lack simulation parameters, network topology, and detailed pump station specifications"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "report_id": "R001",
+  "title": "PNNL Integrated Water Power Resilience Project",
+  "organization": "Pacific Northwest National Laboratory (PNNL)",
+  "year": "2020-ongoing",
+  "content": "PNNL的集成水电韧性项目研究城市供水系统与电力系统之间的相互依赖关系。研究发现：1. 系统级依赖：城市供水系统DEPENDS_ON电力系统，约99%的供水设施运行依赖电力供应。2. 关键耦合点：PumpStation由Substation供电（POWERED_BY），这是水电耦合的核心锚点。3. 扰动分类：自然扰动（地震、洪水、台风、冰灾）占历史事件的72%，技术故障占18%，恶意攻击占10%。4. 统计数据：美国每年因停电导致的供水服务中断平均影响约500万人口，经济损失约20亿美元。5. 研究空白：当前缺乏水-电耦合的量化仿真模型，大多数研究仅考虑单向依赖（电→水），忽略了信息层（SCADA/PLC）的耦合效应。6. 韧性建议：关键泵站应配备BackupPower（柴油发电机或UPS），持续时间不低于8小时；供水系统应实现多电源供电（双回路或微电网）；SCADA系统应具备网络安全防护能力。7. 天然气耦合：部分城市存在气-电-水三重耦合，天然气设施故障可通过电力系统间接影响供水（NaturalGasFacility→Generator→Bus→Pump）。"
+}

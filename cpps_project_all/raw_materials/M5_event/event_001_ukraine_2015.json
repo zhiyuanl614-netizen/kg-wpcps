@@ -1,0 +1,16 @@
+{
+  "event_id": "E001",
+  "title": "2015 Ukraine Power Grid Cyber Attack",
+  "year": 2015,
+  "date": "2015-12-23",
+  "location": "Western Ukraine (Ivano-Frankivsk, Chernivtsi, Kyiv oblasts)",
+  "event_type": "cyber_attack",
+  "description": "On December 23, 2015, a sophisticated cyber attack compromised three Ukrainian regional electricity distribution companies (Prykarpattyaoblenergo, Chernivtsioblenergo, Kyivoblenergo). The attack was carried out by Russian threat group Sandworm. Attackers used spear-phishing emails to gain initial access to the corporate IT network, then pivoted to the SCADA control network. They compromised SCADA systems and remotely opened circuit breakers at 7 110kV substations and 23 35kV substations, causing power outages for approximately 225,000 customers. The attack also disabled backup power at some substations by overwriting firmware on serial-to-ethernet gateways. At 15:35 local time, operators at Prykarpattyaoblenergo control center watched as breakers were opened remotely. The attackers also launched a DoS attack on the utility's call center to prevent customers from reporting outages. Power was partially restored within 1-6 hours, but full restoration took several days. The water supply system in affected areas experienced pressure drops due to Pump stations losing power, though no major water service disruption was reported due to Tank reserves and manual backup operations. This was the first confirmed cyber attack to cause a power outage, demonstrating the vulnerability of SCADA-controlled power infrastructure and its cascading effects on dependent water systems.",
+  "impact": {
+    "population_affected": 225000,
+    "MW_lost": 73,
+    "recovery_time_hours": 6,
+    "substations_affected": 30,
+    "water_impact": "pressure drops in some areas, no major service disruption"
+  }
+}

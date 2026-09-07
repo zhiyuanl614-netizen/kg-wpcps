@@ -1,0 +1,8 @@
+{
+  "standard_id": "IEC 62443",
+  "title": "Industrial Automation and Control Systems Security (工业自动化与控制系统安全)",
+  "year": 2018,
+  "status": "现行有效",
+  "scope": "适用于工业控制系统(ICS/SCADA)的安全防护",
+  "content": "IEC 62443系列标准规定了工业自动化与控制系统(IACS)的安全要求。第2-1条：系统必须建立安全区域和管道模型，将SCADA系统与办公网络隔离。第3-1条：系统安全等级SL1-SL4，供水和电力SCADA系统应达到SL2以上。第3-2条：必须实施访问控制，限制对PLC/RTU的远程访问权限。第3-3条：SCADA系统必须具备入侵检测能力，监测异常控制指令。第4-1条：产品安全要求：PLC/RTU必须支持安全启动、固件签名验证。第4-2条：通信安全要求：SCADA与PLC之间通信必须加密（TLS 1.2+），防止中间人攻击和FDI攻击。关键要求：SCADA系统必须配备REQUIRES_SCADA监控的关键设施包括一级泵站、110kV及以上变电站。SCADA系统CONTROLS断路器、阀门、泵站启停。SCADA系统MONITORS母线电压、频率、泵站出口压力、管网节点压力。安全事件响应：检测到异常控制指令时，SCADA应自动切换到安全模式，断开远程控制通道。"
+}

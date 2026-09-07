@@ -1,0 +1,379 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Water-Power Cyber-Physical System Ontology",
+  "description": "城市供水-电力信息物理耦合系统本体定义，涵盖物理层、信息层、扰动层与状态层",
+  "version": "1.0.0",
+  "created": "2026-08-31",
+
+  "definitions": {
+    "PhysicalLayer": {
+      "description": "物理基础设施层",
+      "oneOf": [
+        {"$ref": "#/definitions/PowerFacility"},
+        {"$ref": "#/definitions/WaterFacility"}
+      ]
+    },
+
+    "PowerFacility": {
+      "description": "电力设施",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^PF_"},
+        "name": {"type": "string"},
+        "facility_type": {
+          "type": "string",
+          "enum": [
+            "PowerPlant",
+            "Substation",
+            "TransmissionLine",
+            "DistributionLine",
+            "Transformer",
+            "Breaker",
+            "CapacitorBank",
+            "Reactor",
+            "BusBar"
+          ]
+        },
+        "voltage_level_kv": {"type": "number"},
+        "rated_capacity_mva": {"type": "number"},
+        "rated_power_mw": {"type": "number"},
+        "latitude": {"type": "number"},
+        "longitude": {"type": "number"},
+        "grid_region": {"type": "string"},
+        "operating_status": {
+          "type": "string",
+          "enum": ["normal", "degraded", "faulted", "offline", "maintenance"]
+        },
+        "commissioning_year": {"type": "integer"},
+        "backup_generator": {"type": "boolean"},
+        "backup_generator_capacity_kva": {"type": "number"},
+        "criticality_level": {"type": "integer", "minimum": 1, "maximum": 5}
+      },
+      "required": ["id", "name", "facility_type"]
+    },
+
+    "WaterFacility": {
+      "description": "供水设施",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^WF_"},
+        "name": {"type": "string"},
+        "facility_type": {
+          "type": "string",
+          "enum": [
+            "WaterTreatmentPlant",
+            "IntakePumpStation",
+            "BoosterPumpStation",
+            "DrainagePumpStation",
+            "Pipeline",
+            "Valve",
+            "Tank",
+            "Reservoir",
+            "Hydrant",
+            "Well"
+          ]
+        },
+        "capacity_m3d": {"type": "number"},
+        "pump_power_kw": {"type": "number"},
+        "pump_head_m": {"type": "number"},
+        "pipe_diameter_mm": {"type": "number"},
+        "pipe_length_km": {"type": "number"},
+        "pipe_material": {"type": "string"},
+        "valve_type": {
+          "type": "string",
+          "enum": ["electric_control", "hydraulic", "manual", "pressure_reducing", "air_release"]
+        },
+        "tank_capacity_m3": {"type": "number"},
+        "latitude": {"type": "number"},
+        "longitude": {"type": "number"},
+        "service_area": {"type": "string"},
+        "operating_status": {
+          "type": "string",
+          "enum": ["normal", "degraded", "faulted", "offline", "maintenance"]
+        },
+        "power_supply_source_id": {"type": "string", "description": "供电来源变电站ID"},
+        "backup_power_type": {
+          "type": "string",
+          "enum": ["none", "diesel_generator", "UPS", "dual_feed"]
+        },
+        "backup_power_duration_h": {"type": "number"},
+        "criticality_level": {"type": "integer", "minimum": 1, "maximum": 5}
+      },
+      "required": ["id", "name", "facility_type"]
+    },
+
+    "CyberLayer": {
+      "description": "信息控制层",
+      "oneOf": [
+        {"$ref": "#/definitions/CyberDevice"},
+        {"$ref": "#/definitions/CommLink"}
+      ]
+    },
+
+    "CyberDevice": {
+      "description": "信息设备",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^CD_"},
+        "name": {"type": "string"},
+        "device_type": {
+          "type": "string",
+          "enum": [
+            "SCADA_Server",
+            "HMI_Workstation",
+            "PLC",
+            "RTU",
+            "PMU",
+            "IED",
+            "Sensor",
+            "Actuator",
+            "Firewall",
+            "Gateway",
+            "DataServer",
+            "Historian"
+          ]
+        },
+        "sensor_type": {
+          "type": "string",
+          "enum": ["pressure", "flow", "level", "voltage", "current", "frequency", "power", "temperature", "chlorine", "turbidity"]
+        },
+        "actuator_type": {
+          "type": "string",
+          "enum": ["pump_speed", "valve_position", "breaker_status", "tap_changer", "capacitor_switch"]
+        },
+        "communication_protocol": {
+          "type": "string",
+          "enum": ["DNP3", "IEC61850", "IEC104", "Modbus", "OPC-UA", "MQTT", "TCP/IP"]
+        },
+        "monitored_physical_id": {"type": "string", "description": "监测的物理设施ID"},
+        "controlled_physical_id": {"type": "string", "description": "控制的物理设施ID"},
+        "ip_address": {"type": "string"},
+        "redundancy": {"type": "boolean"},
+        "firmware_version": {"type": "string"},
+        "security_level": {"type": "integer", "minimum": 1, "maximum": 5},
+        "operating_status": {
+          "type": "string",
+          "enum": ["normal", "degraded", "compromised", "offline", "maintenance"]
+        }
+      },
+      "required": ["id", "name", "device_type"]
+    },
+
+    "CommLink": {
+      "description": "通信链路",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^CL_"},
+        "name": {"type": "string"},
+        "link_type": {
+          "type": "string",
+          "enum": ["FiberLink", "WirelessLink", "EthernetLink", "RadioLink", "SatelliteLink", "SerialLink"]
+        },
+        "bandwidth_mbps": {"type": "number"},
+        "latency_ms": {"type": "number"},
+        "reliability": {"type": "number", "minimum": 0, "maximum": 1},
+        "source_device_id": {"type": "string"},
+        "target_device_id": {"type": "string"},
+        "redundancy_path": {"type": "boolean"},
+        "encryption": {"type": "boolean"},
+        "operating_status": {
+          "type": "string",
+          "enum": ["normal", "degraded", "disrupted", "offline"]
+        }
+      },
+      "required": ["id", "name", "link_type", "source_device_id", "target_device_id"]
+    },
+
+    "HazardThreat": {
+      "description": "扰动威胁",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^HT_"},
+        "name": {"type": "string"},
+        "hazard_type": {
+          "type": "string",
+          "enum": [
+            "Earthquake",
+            "Flood",
+            "Typhoon",
+            "IceStorm",
+            "HeatWave",
+            "Landslide",
+            "FDI_Attack",
+            "DoS_Attack",
+            "Communication_Disruption",
+            "Data_Tampering",
+            "Malware_Infection",
+            "Physical_Sabotage",
+            "Equipment_Aging",
+            "Overload",
+            "Misoperation",
+            "Software_Bug"
+          ]
+        },
+        "hazard_category": {
+          "type": "string",
+          "enum": ["NaturalHazard", "CyberAttack", "EquipmentFailure", "HumanError"]
+        },
+        "intensity": {"type": "number", "description": "扰动强度（0-1标准化）"},
+        "probability": {"type": "number", "description": "发生概率"},
+        "affected_physical_ids": {"type": "array", "items": {"type": "string"}},
+        "affected_cyber_ids": {"type": "array", "items": {"type": "string"}},
+        "onset_time": {"type": "string", "format": "date-time"},
+        "duration_h": {"type": "number"},
+        "spatial_extent": {"type": "string", "description": "空间影响范围描述"},
+        "reference_event": {"type": "string", "description": "参考历史事件"}
+      },
+      "required": ["id", "name", "hazard_type", "hazard_category"]
+    },
+
+    "CPSState": {
+      "description": "信息物理系统运行状态",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^CS_"},
+        "state_type": {
+          "type": "string",
+          "enum": ["NormalState", "DegradedState", "EmergencyState", "CascadingState", "RecoveryState"]
+        },
+        "timestamp": {"type": "string", "format": "date-time"},
+        "system_performance": {"type": "number", "description": "系统性能指标（0-1）"},
+        "power_supply_ratio": {"type": "number", "description": "电力供应比率"},
+        "water_supply_ratio": {"type": "number", "description": "供水服务比率"},
+        "cyber_availability": {"type": "number", "description": "信息系统可用率"},
+        "failed_components": {"type": "array", "items": {"type": "string"}},
+        "cascade_depth": {"type": "integer", "description": "级联深度"},
+        "cascade_path": {"type": "array", "items": {"type": "string"}, "description": "级联传播路径"},
+        "resilience_index": {"type": "number", "description": "韧性指标值"}
+      },
+      "required": ["id", "state_type", "timestamp"]
+    },
+
+    "CascadeEvent": {
+      "description": "级联失效事件",
+      "type": "object",
+      "properties": {
+        "id": {"type": "string", "pattern": "^CE_"},
+        "name": {"type": "string"},
+        "trigger_hazard_id": {"type": "string"},
+        "cascade_chain": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "step": {"type": "integer"},
+              "failed_component_id": {"type": "string"},
+              "failure_type": {"type": "string"},
+              "failure_time_s": {"type": "number"},
+              "cause": {"type": "string"},
+              "propagation_mechanism": {
+                "type": "string",
+                "enum": ["overload", "loss_of_power", "loss_of_control", "loss_of_monitoring", "hydraulic_imbalance", "voltage_collapse", "frequency_deviation"]
+              },
+              "affected_downstream_ids": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["step", "failed_component_id", "failure_type", "cause"]
+          }
+        },
+        "total_failed_count": {"type": "integer"},
+        "total_affected_population": {"type": "integer"},
+        "recovery_time_h": {"type": "number"},
+        "reference_source": {"type": "string", "description": "文献/报告来源"}
+      },
+      "required": ["id", "name", "cascade_chain"]
+    }
+  },
+
+  "relationships": {
+    "CONTROLS": {
+      "description": "下行控制：信息设备控制物理设施",
+      "source": "CyberDevice",
+      "target": ["PowerFacility", "WaterFacility"],
+      "properties": {
+        "control_type": {"type": "string", "enum": ["direct_control", "setpoint", "protection", "scheduling"]},
+        "control_delay_ms": {"type": "number"},
+        "control_reliability": {"type": "number"}
+      }
+    },
+    "MONITORS": {
+      "description": "上行遥测：传感器监测物理设施",
+      "source": "CyberDevice",
+      "target": ["PowerFacility", "WaterFacility"],
+      "properties": {
+        "monitor_type": {"type": "string", "enum": ["real_time", "periodic", "event_driven"]},
+        "sampling_interval_s": {"type": "number"},
+        "measurement_accuracy": {"type": "number"}
+      }
+    },
+    "POWER_SUPPLIES": {
+      "description": "供电支持：电力设施为供水设施供电",
+      "source": "PowerFacility",
+      "target": "WaterFacility",
+      "properties": {
+        "supply_capacity_kva": {"type": "number"},
+        "supply_reliability": {"type": "number"},
+        "is_primary": {"type": "boolean"},
+        "backup_available": {"type": "boolean"}
+      }
+    },
+    "DEPENDS_ON_POWER": {
+      "description": "依赖供电：供水设施依赖电力设施",
+      "source": "WaterFacility",
+      "target": "PowerFacility",
+      "properties": {
+        "power_demand_kw": {"type": "number"},
+        "criticality": {"type": "string", "enum": ["critical", "important", "normal"]},
+        "backup_duration_h": {"type": "number"}
+      }
+    },
+    "CONNECTS_TO": {
+      "description": "物理连接：设施间的管道/线路连接",
+      "source": ["PowerFacility", "WaterFacility"],
+      "target": ["PowerFacility", "WaterFacility"],
+      "properties": {
+        "connection_type": {"type": "string", "enum": ["transmission", "distribution", "pipeline", "feeder"]},
+        "capacity": {"type": "number"},
+        "length_km": {"type": "number"},
+        "impedance": {"type": "number"},
+        "roughness_coefficient": {"type": "number"}
+      }
+    },
+    "CASCADES_TO": {
+      "description": "级联传播：故障从一个组件传播到另一个",
+      "source": ["PowerFacility", "WaterFacility", "CyberDevice"],
+      "target": ["PowerFacility", "WaterFacility", "CyberDevice"],
+      "properties": {
+        "propagation_mechanism": {"type": "string"},
+        "propagation_delay_s": {"type": "number"},
+        "probability": {"type": "number"},
+        "amplification_factor": {"type": "number"}
+      }
+    },
+    "TRIGGERS": {
+      "description": "触发：扰动触发设施失效",
+      "source": "HazardThreat",
+      "target": ["PowerFacility", "WaterFacility", "CyberDevice", "CommLink"],
+      "properties": {
+        "trigger_probability": {"type": "number"},
+        "vulnerability_index": {"type": "number"}
+      }
+    },
+    "TRANSMITS_VIA": {
+      "description": "通信传输：信息设备通过通信链路传输",
+      "source": "CyberDevice",
+      "target": "CommLink",
+      "properties": {
+        "data_type": {"type": "string", "enum": ["measurement", "command", "status", "alarm"]},
+        "data_rate_kbps": {"type": "number"}
+      }
+    },
+    "HAS_STATE": {
+      "description": "系统状态：系统在特定时刻的运行状态",
+      "source": ["PowerFacility", "WaterFacility", "CyberDevice"],
+      "target": "CPSState",
+      "properties": {
+        "timestamp": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

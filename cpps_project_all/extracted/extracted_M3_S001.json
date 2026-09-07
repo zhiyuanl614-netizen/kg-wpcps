@@ -1,0 +1,102 @@
+{
+  "entities": [
+    {
+      "id": "Pump_一级泵站",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "一级泵站",
+      "attributes": {
+        "station_grade": "grade_1",
+        "pump_power": 500,
+        "pump_head": 35,
+        "pump_flow": 1.0
+      }
+    },
+    {
+      "id": "Pump_二级泵站",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "二级泵站",
+      "attributes": {
+        "station_grade": "grade_2",
+        "pump_power": 200
+      }
+    },
+    {
+      "id": "SCADA_监控系统",
+      "type": "SCADA",
+      "layer": "cyber",
+      "name_zh": "给水系统SCADA",
+      "attributes": {
+        "SCADA_requirement": "必须配备SCADA监控系统"
+      }
+    },
+    {
+      "id": "BP_一级泵站_备用电源",
+      "type": "BackupPower",
+      "layer": "resilience",
+      "name_zh": "一级泵站备用电源",
+      "attributes": {
+        "backup_power_type": "diesel_generator",
+        "backup_duration_h": 8
+      }
+    }
+  ],
+  "relations": [
+    {
+      "source": "Pump_一级泵站",
+      "target": "SCADA_监控系统",
+      "type": "REQUIRES_SCADA",
+      "explicitness": "R1-qualitative-requirement",
+      "mandatory_level": "MUST",
+      "evidence": "第5.3.1条：城市给水系统必须配备SCADA监控系统"
+    },
+    {
+      "source": "Pump_一级泵站",
+      "target": "BP_一级泵站_备用电源",
+      "type": "HAS_BACKUP",
+      "explicitness": "R1-qualitative-requirement",
+      "mandatory_level": "MUST",
+      "evidence": "第5.1.2条：一级泵站必须配备备用电源"
+    }
+  ],
+  "mandatory_requirements": [
+    {
+      "requirement_type": "HAS_BACKUP",
+      "target_entity": "Pump_一级泵站",
+      "mandatory_level": "MUST",
+      "detail": "一级泵站必须配备备用电源，柴油发电机容量不低于主泵功率",
+      "clause": "第5.1.2条"
+    },
+    {
+      "requirement_type": "REQUIRES_SCADA",
+      "target_entity": "Pump_一级泵站",
+      "mandatory_level": "MUST",
+      "detail": "给水系统必须配备SCADA监控系统",
+      "clause": "第5.3.1条"
+    }
+  ],
+  "safety_thresholds": [
+    {
+      "criterion": "N-1",
+      "description": "任一管段或泵站故障时，系统应能维持不低于70%的设计供水量",
+      "clause": "第5.2.1条"
+    },
+    {
+      "criterion": "Kp>=0.14MPa",
+      "description": "最不利点自由水压不低于0.14MPa",
+      "clause": "第6.1.1条"
+    },
+    {
+      "criterion": "leak_rate<=12%",
+      "description": "管道漏损率应控制在12%以内",
+      "clause": "第6.2.3条"
+    }
+  ],
+  "metadata": {
+    "standard_id": "GB50282-2016",
+    "extraction_date": "2026-09-06",
+    "ontology_version": "2.0",
+    "material_type": "M3_standard"
+  }
+}

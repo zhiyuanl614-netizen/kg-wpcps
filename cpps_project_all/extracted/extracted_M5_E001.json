@@ -1,0 +1,136 @@
+{
+  "entities": [
+    {
+      "id": "Bus_Prykarpattya",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "Prykarpattya变电站",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "Bus_Chernivtsi",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "Chernivtsi变电站",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "Bus_Kyiv",
+      "type": "Bus",
+      "layer": "power",
+      "name_zh": "Kyiv变电站",
+      "attributes": {
+        "voltage_level_kV": 110
+      }
+    },
+    {
+      "id": "SCADA_Prykarpattya",
+      "type": "SCADA",
+      "layer": "cyber",
+      "name_zh": "Prykarpattyaoblenergo SCADA",
+      "attributes": {}
+    },
+    {
+      "id": "HazardType_cyber_attack",
+      "type": "HazardType",
+      "layer": "hazard",
+      "name_zh": "网络攻击",
+      "attributes": {
+        "hazard_category": "malicious"
+      }
+    },
+    {
+      "id": "Pump_Ivano",
+      "type": "Pump",
+      "layer": "water",
+      "name_zh": "Ivano-Frankivsk泵站",
+      "attributes": {}
+    }
+  ],
+  "relations": [
+    {
+      "source": "HazardType_cyber_attack",
+      "target": "SCADA_Prykarpattya",
+      "type": "TRIGGERS",
+      "explicitness": "R1-narrative",
+      "evidence": "Spear-phishing email compromised SCADA system"
+    },
+    {
+      "source": "SCADA_Prykarpattya",
+      "target": "Bus_Prykarpattya",
+      "type": "CONTROLS",
+      "explicitness": "R1-narrative",
+      "evidence": "Attackers remotely opened 7 110kV breakers via SCADA"
+    },
+    {
+      "source": "SCADA_Prykarpattya",
+      "target": "Bus_Chernivtsi",
+      "type": "CONTROLS",
+      "explicitness": "R1-narrative",
+      "evidence": "Attackers remotely opened 23 35kV breakers via SCADA"
+    },
+    {
+      "source": "Pump_Ivano",
+      "target": "Bus_Prykarpattya",
+      "type": "POWERED_BY",
+      "explicitness": "R0-implicit",
+      "evidence": "Pump station lost power when substation breakers were opened"
+    }
+  ],
+  "event_timeline": [
+    {
+      "time": "2015-12-23 15:30",
+      "event": "Attackers remotely opened 7 110kV breakers",
+      "affected_entities": [
+        "Bus_Prykarpattya"
+      ]
+    },
+    {
+      "time": "2015-12-23 15:35",
+      "event": "~225,000 customers lost power",
+      "affected_entities": []
+    },
+    {
+      "time": "2015-12-23 16:00",
+      "event": "DoS attack on call center",
+      "affected_entities": []
+    },
+    {
+      "time": "2015-12-23 18:00",
+      "event": "Partial power restoration began",
+      "affected_entities": []
+    }
+  ],
+  "cascade_chains": [
+    {
+      "chain": [
+        "cyber_attack",
+        "SCADA被控",
+        "变电站断路器断开",
+        "大面积停电",
+        "泵站断电",
+        "供水压力下降"
+      ],
+      "relation_type": "CASCADES_TO",
+      "expression": "narrative",
+      "amplifies": false,
+      "description": "网络攻击→SCADA控制权丧失→变电站跳闸→泵站断电→供水压力下降"
+    }
+  ],
+  "amplification_loops": [],
+  "impact_statistics": {
+    "impact_population": 225000,
+    "MW_lost": 73,
+    "recovery_time": 6
+  },
+  "metadata": {
+    "event_id": "E001",
+    "extraction_date": "2026-09-06",
+    "ontology_version": "2.0",
+    "material_type": "M5_event"
+  }
+}

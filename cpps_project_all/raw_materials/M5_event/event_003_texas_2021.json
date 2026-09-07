@@ -1,0 +1,16 @@
+{
+  "event_id": "E003",
+  "title": "2021 Texas Winter Storm Power and Water Crisis",
+  "year": 2021,
+  "date": "2021-02-15 to 2021-02-20",
+  "location": "Texas, USA",
+  "event_type": "ice_disaster",
+  "description": "In February 2021, Winter Storm Uri caused the worst energy infrastructure failure in Texas state history. Extreme cold (as low as -18°C) caused natural gas wellheads to freeze, reducing gas supply to power plants. 48.6% of Texas generation capacity went offline. At peak, 4.5 million households (approximately 10 million people) lost power. The cascading failure propagated from power to water: (1) Power outages caused Pump stations to stop operating; (2) Without pumping, water pressure dropped throughout distribution systems; (3) Frozen pipes burst due to lack of flowing water and extreme cold; (4) Water treatment plants lost power, reducing treatment capacity; (5) Over 1,100 boil water notices were issued affecting 12 million people. In Austin, the water system lost 325 million gallons due to pipe bursts and low pressure. The Austin Water Utility's Ullrich Water Treatment Plant lost power, and backup generators failed after 8 hours. Houston issued a boil water notice for 2.3 million residents. The AMPLIFIES positive feedback loop: power outage → Pump failure → pipe freeze/burst → water system damage → increased demand on remaining infrastructure → further failures. Recovery took 1-2 weeks for water service, but some areas had boil notices for over a month. This event highlighted the interdependency of gas-power-water systems and the inadequacy of BackupPower (diesel generators) in extreme cold conditions.",
+  "impact": {
+    "population_affected": 10000000,
+    "MW_lost": 34000,
+    "recovery_time_hours": 336,
+    "boil_water_notices": 1100,
+    "water_impact": "12M under boil notice, Austin lost 325M gallons, Houston 2.3M affected"
+  }
+}

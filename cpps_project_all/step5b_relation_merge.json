@@ -1,0 +1,277 @@
+{
+  "step": "5b",
+  "title": "Merged Relation Frequency → v2.0 Relation Set",
+  "date": "2026-09-06",
+  "method": "Material-specific relation names unified by semantic equivalence; DEPENDS_ON(PumpStation→Substation) merged into POWERED_BY; explicitness preserved per material",
+  "key_merge_decisions": {
+    "DEPENDS_ON_PumpStation_to_Substation → POWERED_BY": "M2 report 60% qualitative dependency semantically equivalent to M1 POWERED_BY(Pump→Bus)",
+    "POWER_SUPPLIES_substation_to_pump → POWERED_BY": "M4 plan 40% named mapping is same relation",
+    "REQUIRES_System_to_SCADA → CONTROLS+MONITORS": "M3 standard 60% SCADA requirement implies both control and monitoring capabilities",
+    "DEPENDS_ON_PumpStation_to_BackupPower → HAS_BACKUP": "Distinct from POWERED_BY; resilience-specific relation",
+    "DEPENDS_ON_WaterSystem_to_PowerSystem → DEPENDS_ON": "System-level dependency kept separate from device-level POWERED_BY",
+    "CONNECTS_TO_power + CONNECTS_TO_water → CONNECTS_TO": "Unified as single intra-layer topology relation with layer_type attribute"
+  },
+  "decision_rules": {
+    "required": "appears in >=4 material types",
+    "keep": "appears in 2-3 material types",
+    "keep_single_high": "appears in 1 material type but pct>=50%",
+    "optional": "appears in 1 material type with pct<50%"
+  },
+  "relations": {
+    "CASCADES_TO": {
+      "total_materials": 4,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M4",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 60,
+        "M2": 60,
+        "M4": 80,
+        "M5": 100
+      },
+      "explicitness_per_material": {
+        "M1": "R3-formula",
+        "M2": "R1-qualitative",
+        "M4": "R1-narrative",
+        "M5": "R1-narrative"
+      },
+      "v2_decision": "required",
+      "domain": "Bus|Pump|Generator",
+      "range": "Pump|Node_Junction|Bus",
+      "layer": "cross-layer",
+      "description": "跨层级联故障传播"
+    },
+    "CONTROLS": {
+      "total_materials": 4,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M3",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 40,
+        "M2": 20,
+        "M3": 60,
+        "M5": 20
+      },
+      "explicitness_per_material": {
+        "M1": "R2-simplified",
+        "M2": "R1-qualitative",
+        "M3": "R1-qualitative-requirement",
+        "M5": "R1-narrative"
+      },
+      "v2_decision": "required",
+      "domain": "SCADA|CyberNode",
+      "range": "Bus|Pump|Generator",
+      "layer": "cyber→physical",
+      "description": "信息层控制物理层"
+    },
+    "POWERED_BY": {
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M4"
+      ],
+      "best_pct_per_material": {
+        "M1": 100,
+        "M2": 60,
+        "M4": 40
+      },
+      "explicitness_per_material": {
+        "M1": "R3-formula",
+        "M2": "R1-qualitative",
+        "M4": "R2-named"
+      },
+      "v2_decision": "keep",
+      "domain": "Pump",
+      "range": "Bus",
+      "layer": "cross-layer",
+      "description": "水泵由母线供电（水电耦合核心锚点）"
+    },
+    "TRIGGERS": {
+      "total_materials": 3,
+      "appeared_in": [
+        "M1",
+        "M2",
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M1": 53,
+        "M2": 40,
+        "M5": 100
+      },
+      "explicitness_per_material": {
+        "M1": "R4-probabilistic",
+        "M2": "R1-qualitative",
+        "M5": "R1-narrative"
+      },
+      "v2_decision": "keep",
+      "domain": "HazardType",
+      "range": "Bus|Pump|Generator|Pipe_Link",
+      "layer": "hazard→physical",
+      "description": "外部扰动触发组件故障"
+    },
+    "MONITORS": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M1",
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M1": 27,
+        "M3": 60
+      },
+      "explicitness_per_material": {
+        "M1": "R2-simplified",
+        "M3": "R1-qualitative-requirement"
+      },
+      "v2_decision": "keep",
+      "domain": "SCADA|CyberNode",
+      "range": "Bus|Pump|Node_Junction",
+      "layer": "cyber→physical",
+      "description": "信息层监测物理层"
+    },
+    "HAS_BACKUP": {
+      "total_materials": 2,
+      "appeared_in": [
+        "M3",
+        "M4"
+      ],
+      "best_pct_per_material": {
+        "M3": 40,
+        "M4": 80
+      },
+      "explicitness_per_material": {
+        "M3": "R1-qualitative-requirement",
+        "M4": "R2-named"
+      },
+      "v2_decision": "keep",
+      "domain": "Pump|Bus",
+      "range": "BackupPower",
+      "layer": "resilience",
+      "description": "设施配备备用电源"
+    },
+    "CONNECTS_TO": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M1"
+      ],
+      "best_pct_per_material": {
+        "M1": 73
+      },
+      "explicitness_per_material": {
+        "M1": "R3-formula"
+      },
+      "v2_decision": "keep_single_high",
+      "domain": "Bus|Node_Junction|CyberNode",
+      "range": "Bus|Node_Junction|CyberNode",
+      "layer": "intra-layer",
+      "description": "同层拓扑连接（Branch/Pipe/CyberEdge）"
+    },
+    "REQUIRES_SCADA": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 60
+      },
+      "explicitness_per_material": {
+        "M3": "R1-qualitative-requirement"
+      },
+      "v2_decision": "keep_single_high",
+      "domain": "Pump|Bus",
+      "range": "SCADA",
+      "layer": "standard-requirement",
+      "description": "标准要求配备SCADA监控"
+    },
+    "DEPENDS_ON": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M2"
+      ],
+      "best_pct_per_material": {
+        "M2": 40
+      },
+      "explicitness_per_material": {
+        "M2": "R1-qualitative"
+      },
+      "v2_decision": "optional",
+      "domain": "WaterSystem|Pump",
+      "range": "Generator|Bus",
+      "layer": "cross-layer",
+      "description": "水系统依赖电力系统（系统级定性描述）"
+    },
+    "AMPLIFIES": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M5"
+      ],
+      "best_pct_per_material": {
+        "M5": 20
+      },
+      "explicitness_per_material": {
+        "M5": "R1-narrative"
+      },
+      "v2_decision": "optional",
+      "domain": "Bus|Pump",
+      "range": "Bus|Pump",
+      "layer": "cross-layer",
+      "description": "正反馈放大效应（事件独有）"
+    },
+    "MUST_SATISFY": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 40
+      },
+      "explicitness_per_material": {
+        "M3": "R1-qualitative-mandatory"
+      },
+      "v2_decision": "optional",
+      "domain": "System",
+      "range": "Criterion",
+      "layer": "standard-mandatory",
+      "description": "标准强制满足安全准则"
+    },
+    "MUST_PREVENT": {
+      "total_materials": 1,
+      "appeared_in": [
+        "M3"
+      ],
+      "best_pct_per_material": {
+        "M3": 20
+      },
+      "explicitness_per_material": {
+        "M3": "R1-qualitative-mandatory"
+      },
+      "v2_decision": "optional",
+      "domain": "System",
+      "range": "CascadeFailure",
+      "layer": "standard-mandatory",
+      "description": "标准强制防止级联故障"
+    }
+  },
+  "summary": {
+    "total_unique_relations": 12,
+    "by_decision": {
+      "keep": 4,
+      "required": 2,
+      "keep_single_high": 2,
+      "optional": 4
+    },
+    "v2_core_relations": 6,
+    "v2_extended_relations": 2,
+    "v2_optional_relations": 4,
+    "cross_layer_relations": 4,
+    "cyber_physical_relations": 2,
+    "resilience_relations": 1
+  }
+}

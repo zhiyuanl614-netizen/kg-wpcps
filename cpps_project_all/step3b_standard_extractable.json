@@ -1,0 +1,691 @@
+{
+  "step": "3b",
+  "title": "Standards (M3) Extractable Entities and Relations",
+  "date": "2026-08-31",
+  "sampled_standards": 5,
+  "standards": [
+    {
+      "id": "S1",
+      "title": "GB 50013-2018 室外给水设计标准",
+      "year": 2018,
+      "scope": "室外给水工程设计",
+      "chapters": [
+        "总则",
+        "术语",
+        "给水系统",
+        "设计水量",
+        "取水",
+        "泵房",
+        "输配水",
+        "水厂总体设计",
+        "水处理",
+        "净水厂排泥水处理",
+        "应急供水",
+        "检测与控制"
+      ],
+      "extractable_entities": [
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "chapter": "6-泵房",
+          "attributes": [
+            "pump_type_centifugal_axial",
+            "pump_power_kW",
+            "pump_head_m",
+            "pump_flow_m3h",
+            "backup_pump_count"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "Pipeline",
+          "granularity": "L2-station",
+          "chapter": "7-输配水",
+          "attributes": [
+            "pipe_diameter_mm",
+            "pipe_material",
+            "pipe_pressure_rating_MPa",
+            "design_flow_m3d"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "WaterTreatmentPlant",
+          "granularity": "L2-station",
+          "chapter": "8-水厂总体设计",
+          "attributes": [
+            "capacity_m3d",
+            "treatment_process_type"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "Tank",
+          "granularity": "L2-station",
+          "chapter": "7-输配水",
+          "attributes": [
+            "capacity_m3",
+            "water_level_range_m"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "Valve",
+          "granularity": "L3-device",
+          "chapter": "7-输配水",
+          "attributes": [
+            "valve_type_check_gate_butterfly",
+            "valve_diameter_mm"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "SCADA",
+          "granularity": "L1-requirement",
+          "chapter": "12-检测与控制",
+          "attributes": [
+            "monitoring_requirement",
+            "control_requirement"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "BackupPower",
+          "granularity": "L3-device",
+          "chapter": "6-泵房+11-应急供水",
+          "attributes": [
+            "backup_type_diesel_dual_feed",
+            "backup_duration_h"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "DEPENDS_ON",
+          "from": "PumpStation",
+          "to": "BackupPower",
+          "explicitness": "R1-qualitative-requirement",
+          "chapter": "6-泵房",
+          "frequency": "high"
+        },
+        {
+          "relation": "REQUIRES",
+          "from": "WaterSystem",
+          "to": "SCADA",
+          "explicitness": "R1-qualitative-requirement",
+          "chapter": "12-检测与控制",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "design_parameters": [
+          "design_water_quantity_per_capita_Ld",
+          "pipe_diameter_mm",
+          "pump_head_m",
+          "tank_capacity_m3"
+        ],
+        "safety_requirements": [
+          "backup_power_for_key_pump_stations",
+          "emergency_water_supply_measures",
+          "seismic_fortification_intensity"
+        ],
+        "monitoring_control": [
+          "SCADA_deployment_requirement",
+          "pressure_monitoring_points",
+          "flow_monitoring_points"
+        ]
+      },
+      "cannot_extract": [
+        "network_topology",
+        "cascade_analysis",
+        "named_facilities",
+        "simulation_model",
+        "cyber_architecture"
+      ]
+    },
+    {
+      "id": "S2",
+      "title": "GB 38755-2019 电力系统安全稳定导则",
+      "year": 2019,
+      "scope": "电力系统安全稳定运行",
+      "chapters": [
+        "基本要求",
+        "安全稳定标准",
+        "计算分析",
+        "工作管理"
+      ],
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "chapter": "1-基本要求",
+          "attributes": [
+            "voltage_level_kV"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "TransmissionLine",
+          "granularity": "L2-station",
+          "chapter": "1-基本要求",
+          "attributes": [
+            "voltage_level_kV",
+            "transfer_capacity_MW"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "Generator",
+          "granularity": "L2-station",
+          "chapter": "1-基本要求",
+          "attributes": [
+            "capacity_MW",
+            "type_thermal_hydro_nuclear_wind"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "chapter": "2-安全稳定标准",
+          "attributes": [
+            "N-1_criterion",
+            "N-2_criterion",
+            "cascading_prevention_requirement"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "MUST_SATISFY",
+          "from": "PowerSystem",
+          "to": "N-1_Criterion",
+          "explicitness": "R1-qualitative-mandatory",
+          "chapter": "2-安全稳定标准",
+          "frequency": "high"
+        },
+        {
+          "relation": "MUST_PREVENT",
+          "from": "PowerSystem",
+          "to": "CascadingFailure",
+          "explicitness": "R1-qualitative-mandatory",
+          "chapter": "2-安全稳定标准",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "stability_criteria": [
+          "three_level_stability_standard",
+          "static_stability_reserve_coefficient_Kp_ge_1.05_1.10",
+          "N-1_no_loss_of_load",
+          "N-2_prevent_system_collapse"
+        ],
+        "calculation_requirements": [
+          "power_flow_analysis",
+          "stability_simulation",
+          "cascading_failure_analysis"
+        ]
+      },
+      "cannot_extract": [
+        "water_system",
+        "cyber_layer",
+        "named_facilities",
+        "specific_network_parameters"
+      ]
+    },
+    {
+      "id": "S3",
+      "title": "GB 50265-2010 泵站设计规范",
+      "year": 2010,
+      "scope": "泵站工程设计",
+      "chapters": [
+        "泵站等级和标准",
+        "泵房设计",
+        "机电设备",
+        "电气设计",
+        "自动化与监控"
+      ],
+      "extractable_entities": [
+        {
+          "entity": "PumpStation",
+          "granularity": "L2-station",
+          "chapter": "1-等级和标准",
+          "attributes": [
+            "station_grade_1_to_5",
+            "design_flow_m3s",
+            "design_head_m",
+            "pump_count",
+            "pump_type"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "Pump",
+          "granularity": "L3-device",
+          "chapter": "3-机电设备",
+          "attributes": [
+            "rated_power_kW",
+            "rated_flow_m3s",
+            "rated_head_m",
+            "speed_rpm"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "BackupPower",
+          "granularity": "L3-device",
+          "chapter": "4-电气设计",
+          "attributes": [
+            "power_supply_reliability_requirement",
+            "backup_type",
+            "backup_capacity_kVA"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "SCADA",
+          "granularity": "L1-requirement",
+          "chapter": "5-自动化与监控",
+          "attributes": [
+            "automation_level",
+            "monitoring_parameters"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "DEPENDS_ON",
+          "from": "PumpStation",
+          "to": "BackupPower",
+          "explicitness": "R1-qualitative-requirement",
+          "chapter": "4-电气设计",
+          "frequency": "high"
+        },
+        {
+          "relation": "REQUIRES",
+          "from": "PumpStation",
+          "to": "SCADA",
+          "explicitness": "R1-qualitative-requirement",
+          "chapter": "5-自动化与监控",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "design_parameters": [
+          "station_grade",
+          "pump_rated_parameters",
+          "backup_power_specification"
+        ],
+        "electrical_requirements": [
+          "power_supply_reliability",
+          "voltage_level_kV",
+          "backup_power_duration"
+        ]
+      },
+      "cannot_extract": [
+        "power_network_topology",
+        "cascade_analysis",
+        "cyber_architecture_detail"
+      ]
+    },
+    {
+      "id": "S4",
+      "title": "CJJ 92-2016 城镇供水管网漏损控制及评定标准",
+      "year": 2016,
+      "scope": "供水管网漏损控制",
+      "chapters": [
+        "基本规定",
+        "漏损评定",
+        "漏损控制",
+        "漏损检测",
+        "管网管理"
+      ],
+      "extractable_entities": [
+        {
+          "entity": "Pipeline",
+          "granularity": "L2-station",
+          "chapter": "2-漏损评定",
+          "attributes": [
+            "leak_rate_pct",
+            "pipe_age_year",
+            "pipe_material"
+          ],
+          "frequency": "high"
+        },
+        {
+          "entity": "DMA_District",
+          "granularity": "L2-station",
+          "chapter": "3-漏损控制",
+          "attributes": [
+            "dma_area_km2",
+            "dma_inflow_m3d",
+            "dma_pressure_MPa"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "Sensor",
+          "granularity": "L3-device",
+          "chapter": "4-漏损检测",
+          "attributes": [
+            "sensor_type_pressure_flow_acoustic"
+          ],
+          "frequency": "medium"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "REQUIRES",
+          "from": "Pipeline",
+          "to": "Sensor",
+          "explicitness": "R1-qualitative-requirement",
+          "chapter": "4-漏损检测",
+          "frequency": "medium"
+        }
+      ],
+      "extractable_attributes": {
+        "assessment_indicators": [
+          "leak_rate_limit_12pct_10pct",
+          "water_balance_table"
+        ],
+        "control_measures": [
+          "DMA_partition",
+          "pressure_management",
+          "active_leak_detection"
+        ]
+      },
+      "cannot_extract": [
+        "power_system",
+        "cascade_analysis",
+        "cyber_layer"
+      ]
+    },
+    {
+      "id": "S5",
+      "title": "DL 755-2001 电力系统安全稳定导则(已被GB 38755替代)",
+      "year": 2001,
+      "scope": "电力系统安全稳定(原行业标准)",
+      "chapters": [
+        "基本要求",
+        "安全稳定标准",
+        "计算分析",
+        "工作管理"
+      ],
+      "extractable_entities": [
+        {
+          "entity": "Substation",
+          "granularity": "L2-station",
+          "chapter": "1-基本要求",
+          "attributes": [
+            "voltage_level_220kV_and_above"
+          ],
+          "frequency": "medium"
+        },
+        {
+          "entity": "Generator",
+          "granularity": "L2-station",
+          "chapter": "1-基本要求",
+          "attributes": [],
+          "frequency": "medium"
+        },
+        {
+          "entity": "HazardType",
+          "granularity": "L1-system",
+          "chapter": "2-安全稳定标准",
+          "attributes": [
+            "three_level_stability_standard"
+          ],
+          "frequency": "high"
+        }
+      ],
+      "extractable_relations": [
+        {
+          "relation": "MUST_SATISFY",
+          "from": "PowerSystem",
+          "to": "StabilityCriterion",
+          "explicitness": "R1-qualitative-mandatory",
+          "chapter": "2-安全稳定标准",
+          "frequency": "high"
+        }
+      ],
+      "extractable_attributes": {
+        "stability_criteria": [
+          "static_stability_Kp_ge_1.05",
+          "N-1_criterion",
+          "cascading_prevention"
+        ]
+      },
+      "cannot_extract": [
+        "water_system",
+        "cyber_layer",
+        "specific_parameters"
+      ]
+    }
+  ],
+  "summary": {
+    "entity_frequency": {
+      "PumpStation": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S1",
+          "S3"
+        ]
+      },
+      "Pump": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L3-device",
+        "source_standards": [
+          "S3"
+        ]
+      },
+      "Pipeline": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S1",
+          "S4"
+        ]
+      },
+      "WaterTreatmentPlant": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S1"
+        ]
+      },
+      "Tank": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S1"
+        ]
+      },
+      "Valve": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L3-device",
+        "source_standards": [
+          "S1"
+        ]
+      },
+      "Substation": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S2",
+          "S5"
+        ]
+      },
+      "TransmissionLine": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S2"
+        ]
+      },
+      "Generator": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S2",
+          "S5"
+        ]
+      },
+      "SCADA_requirement": {
+        "count": 3,
+        "pct": 60,
+        "granularity": "L1-requirement",
+        "source_standards": [
+          "S1",
+          "S3"
+        ]
+      },
+      "BackupPower": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L3-device",
+        "source_standards": [
+          "S1",
+          "S3"
+        ]
+      },
+      "HazardType": {
+        "count": 2,
+        "pct": 40,
+        "granularity": "L1-system",
+        "source_standards": [
+          "S2",
+          "S5"
+        ]
+      },
+      "Sensor": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L3-device",
+        "source_standards": [
+          "S4"
+        ]
+      },
+      "DMA_District": {
+        "count": 1,
+        "pct": 20,
+        "granularity": "L2-station",
+        "source_standards": [
+          "S4"
+        ]
+      }
+    },
+    "relation_frequency": {
+      "DEPENDS_ON_PumpStation_to_BackupPower": {
+        "count": 2,
+        "pct": 40,
+        "explicitness": "R1-qualitative-requirement"
+      },
+      "REQUIRES_System_to_SCADA": {
+        "count": 3,
+        "pct": 60,
+        "explicitness": "R1-qualitative-requirement"
+      },
+      "MUST_SATISFY_System_to_Criterion": {
+        "count": 2,
+        "pct": 40,
+        "explicitness": "R1-qualitative-mandatory"
+      },
+      "MUST_PREVENT_System_to_CascadingFailure": {
+        "count": 1,
+        "pct": 20,
+        "explicitness": "R1-qualitative-mandatory"
+      }
+    },
+    "attribute_frequency": {
+      "voltage_level_kV": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A3-rated"
+      },
+      "pump_rated_power_kW": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A3-rated"
+      },
+      "pump_head_m": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A3-rated"
+      },
+      "pump_flow_m3s": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A3-rated"
+      },
+      "pipe_diameter_mm": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A3-rated"
+      },
+      "pipe_material": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A1-qualitative"
+      },
+      "backup_power_type": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A2-semi-quantitative"
+      },
+      "backup_power_duration": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2-semi-quantitative"
+      },
+      "capacity_m3d": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A3-rated"
+      },
+      "station_grade": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2-semi-quantitative"
+      },
+      "stability_criterion": {
+        "count": 2,
+        "pct": 40,
+        "precision": "A2-semi-quantitative"
+      },
+      "leak_rate_limit": {
+        "count": 1,
+        "pct": 20,
+        "precision": "A2-semi-quantitative"
+      },
+      "SCADA_requirement": {
+        "count": 3,
+        "pct": 60,
+        "precision": "A1-qualitative"
+      }
+    },
+    "key_findings": {
+      "entity_granularity": "Standards use L2-station and L3-device level, providing the most detailed facility classification and design parameters",
+      "relation_explicitness": "Standards use R1-qualitative-REQUIREMENT (mandatory/推荐性), unique among all material types",
+      "attribute_precision": "Standards provide A3-rated values (design/nominal parameters), the highest precision for design parameters",
+      "unique_contribution_1": "Standards define MANDATORY requirements (backup power, SCADA deployment, stability criteria) that other materials do not",
+      "unique_contribution_2": "Standards provide complete facility classification systems and terminology definitions",
+      "unique_contribution_3": "Standards specify safety thresholds (N-1, Kp>=1.05, leak_rate<=12%) that serve as constraint parameters for models",
+      "cascade_description": "GB 38755 explicitly requires cascading failure prevention but does not describe cascade mechanisms",
+      "cyber_layer": "Standards require SCADA/monitoring but do not specify architecture or protocols",
+      "gap": "Standards cover power OR water separately; NO standard covers water-power interdependency"
+    }
+  }
+}
